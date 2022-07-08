@@ -48,7 +48,7 @@ export const ApiDetails = () => {
         </Link>
         <div className='text-2xl font-bold'>API : {api.name}</div>
       </div>
-      <div className='w-4/5 overflow-hidden flex flex-wrap items-stretch justify-between gap-2'>
+      <div className='w-11/12 overflow-hidden flex flex-wrap items-stretch justify-between gap-2'>
         {Object.keys(api).map((k) => (
           <div
             key={k}

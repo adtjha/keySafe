@@ -92,7 +92,7 @@ export const ApiUsers = () => {
       <div className='relative w-full flex flex-row items-stretch justify-center'>
         <Link
           to='/'
-          className='absolute left-10 hover:bg-gray-200 rounded-full p-2'>
+          className='absolute left-2 hover:bg-gray-200 rounded-full p-2'>
           <svg
             xmlns='http://www.w3.org/2000/svg'
             className='h-6 w-6'
@@ -109,49 +109,25 @@ export const ApiUsers = () => {
         </Link>
         <div className='text-2xl font-bold'>API : {api.name}</div>
       </div>
-      {/* <div className='w-4/5 overflow-hidden flex flex-wrap items-stretch justify-between gap-2'>
-        {users.map((user) => (
-          <div
-            key={user.uid}
-            className='flex flex-row items-center justify-evenly'>
-            <div className='w-auto flex-grow flex flex-col items-start p-4 border-2 border-gray-200 hover:bg-gray-200 rounded-md cursor-copy'>
-              <h1 className='text-gray-600 text-sm mb-1'>uid</h1>
-              <h3 className='break-all text-left'>{user.uid}</h3>
-            </div>
-            <div className='w-auto flex-grow flex flex-col items-start p-4 border-2 border-gray-200 hover:bg-gray-200 rounded-md cursor-copy'>
-              <h1 className='text-gray-600 text-sm mb-1'>Date Created At</h1>
-              <h3 className='break-all text-left'>{user.dateCreatedAt}</h3>
-            </div>
-            <div className='w-auto flex-grow flex flex-col items-start p-4 border-2 border-gray-200 hover:bg-gray-200 rounded-md cursor-copy'>
-              <h1 className='text-gray-600 text-sm mb-1'>key</h1>
-              <h3 className='break-all text-left'>{user.key}</h3>
-            </div>
-            <div className='w-auto flex-grow flex flex-col items-start p-4 border-2 border-gray-200 hover:bg-gray-200 rounded-md cursor-copy'>
-              <h1 className='text-gray-600 text-sm mb-1'>secret</h1>
-              <h3 className='break-all text-left'>{user.secret}</h3>
-            </div>
-          </div>
-        ))}
-      </div> */}
       <table class='border-collapse table-fixed w-full text-sm text-left cursor-pointer'>
         <thead>
           <tr>
-            <th class='w-20 border-b dark:border-gray-600 font-medium p-4 pl-8 pt-0 pb-3 text-gray-400 dark:text-gray-200 text-left'>
+            <th class='w-20 border-b dark:border-gray-600 font-medium p-4 pl-8 pt-0 pb-3 text-gray-400 dark:text-gray-200 text-left uppercase text-xs'>
               Index
             </th>
-            <th class='border-b dark:border-gray-600 font-medium p-4 pt-0 pb-3 text-gray-400 dark:text-gray-200 text-left'>
+            <th class='border-b dark:border-gray-600 font-medium p-4 pt-0 pb-3 text-gray-400 dark:text-gray-200 text-left uppercase text-xs'>
               uid
             </th>
-            <th class='w-36 border-b dark:border-gray-600 font-medium p-4 pt-0 pb-3 text-gray-400 dark:text-gray-200 text-left'>
+            <th class='w-36 border-b dark:border-gray-600 font-medium p-4 pt-0 pb-3 text-gray-400 dark:text-gray-200 text-left uppercase text-xs'>
               Date Created At
             </th>
-            <th class='border-b dark:border-gray-600 font-medium p-4 pt-0 pb-3 text-gray-400 dark:text-gray-200 text-left'>
+            <th class='border-b dark:border-gray-600 font-medium p-4 pt-0 pb-3 text-gray-400 dark:text-gray-200 text-left uppercase text-xs'>
               key
             </th>
-            <th class='border-b dark:border-gray-600 font-medium p-4 pt-0 pb-3 text-gray-400 dark:text-gray-200 text-left'>
+            <th class='border-b dark:border-gray-600 font-medium p-4 pt-0 pb-3 text-gray-400 dark:text-gray-200 text-left uppercase text-xs'>
               secret
             </th>
-            <th class='w-4 border-b dark:border-gray-600 font-medium p-4 pr-8 pt-0 pb-3 text-gray-400 dark:text-gray-200 text-left'></th>
+            <th class='w-4 border-b dark:border-gray-600 font-medium p-4 pr-8 pt-0 pb-3 text-gray-400 dark:text-gray-200 text-left uppercase text-xs'></th>
           </tr>
         </thead>
         <tbody class='bg-white dark:bg-gray-800'>
