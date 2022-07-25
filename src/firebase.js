@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { connectAuthEmulator, getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { getAnalytics } from "firebase/analytics";
 import * as firebaseui from 'firebaseui'
 // TODO: Add SDKs for Firebase products that you want to use
@@ -21,6 +21,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 
 export const auth = getAuth(app);
+connectAuthEmulator(auth, "http://localhost:9099");
 
 export const googleProvider = new GoogleAuthProvider();
 

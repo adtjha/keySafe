@@ -14,6 +14,8 @@ import { authMachine } from "./xstate/authMachine";
 import { useActor, useInterpret } from "@xstate/react";
 import { DashboardWrapper } from "./components/DashboardWrapper";
 import { ApiUsers } from "./components/APIUsers";
+import { APINew } from "./components/APINew";
+import Protected from "./components/Protected";
 
 export const GlobalStateContext = createContext({});
 
@@ -27,11 +29,7 @@ function App() {
   return (
     <GlobalStateContext.Provider value={{ authService }}>
       <div className='App'>
-        <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path='/api' element={<ApiUsers />} />
-          <Route path='/api/:key' element={<ApiDetails />} />
-        </Routes>
+        <Home />
       </div>
     </GlobalStateContext.Provider>
   );
@@ -48,13 +46,44 @@ const Home = () => {
 
   return (
     <>
-      {isLogin ? (
-        <DashboardWrapper>
-          <Dashboard />
-        </DashboardWrapper>
-      ) : (
-        <LandingPage />
-      )}
+      <Routes>
+        <Route
+          path='/'
+          element={
+            isLogin ? (
+              <DashboardWrapper>
+                <Dashboard />
+              </DashboardWrapper>
+            ) : (
+              <LandingPage />
+            )
+          }
+        />
+        <Route
+          path='/api'
+          element={
+            <Protected isLoggedIn={isLogin}>
+              <ApiUsers />
+            </Protected>
+          }
+        />
+        <Route
+          path='/api/:key'
+          element={
+            <Protected isLoggedIn={isLogin}>
+              <ApiDetails />
+            </Protected>
+          }
+        />
+        <Route
+          path='/api/new'
+          element={
+            <Protected isLoggedIn={isLogin}>
+              <APINew />
+            </Protected>
+          }
+        />
+      </Routes>
     </>
   );
 };

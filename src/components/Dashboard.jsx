@@ -14,6 +14,13 @@ export const Dashboard = () => {
       <div className='text-2xl font-bold'>
         {state.context.user.displayName} API's
       </div>
+      <div className='w-fit rounded-md space-y-4'>
+        <Link
+          to='/api/new'
+          className='bg-white py-2 px-4 rounded-lg border border-transparent border-gray-400'>
+          Create new API
+        </Link>
+      </div>
       <div>
         <ul className='w-fit p-2 rounded-md space-y-4'>
           {apis.map((a, i) => (

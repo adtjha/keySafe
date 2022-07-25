@@ -7,7 +7,7 @@ export const DashboardWrapper = ({ children }) => {
   const [state, send] = useActor(globalServices.authService);
 
   return (
-    <div className='m-auto w-2/3 h-full bg-stone-50 p-4 flex flex-col items-center justify-start space-y-8 text-gray-600'>
+    <div className='m-auto w-2/3 h-full bg-stone-50 p-4 flex flex-col items-center justify-start space-y-4 text-gray-600'>
       <div className='relative w-full flex flex-row items-center justify-center'>
         <svg
           xmlns='http://www.w3.org/2000/svg'
@@ -20,7 +20,7 @@ export const DashboardWrapper = ({ children }) => {
             clipRule='evenodd'
           />
         </svg>
-        <div className='text-4xl font-bold'>Dashboard</div>
+        <div className='text-2xl font-bold'>Dashboard</div>
         <button
           onClick={() => send("LOGOUT")}
           className='absolute right-2 flex flex-row items-center justify-evenly gap-2 border border-transparent hover:border-gray-200 p-2 rounded-md'>
