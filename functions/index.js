@@ -1,5 +1,6 @@
 const { initializeApp, applicationDefault, cert } = require('firebase-admin/app');
-const { getFirestore } = require('firebase-admin/firestore');
+const { getFirestore, FieldValue } = require('firebase-admin/firestore');
+const { randomBytes, createHash } = require('crypto')
 
 initializeApp();
 const db = getFirestore()
@@ -11,6 +12,7 @@ const { postVerify } = require("./src/verify/postVerify");
 const { deleteAPI } = require("./src/api/deleteAPI");
 const { postApiUser } = require("./src/apiUser/postApiUser");
 const { patchApiUser } = require("./src/apiUser/patchApiUser");
+const has = require('has');
 
 // // Create and Deploy Your First Cloud Functions
 // // https://firebase.google.com/docs/functions/write-firebase-functions
@@ -67,7 +69,7 @@ exports.api = functions.https.onRequest(async (req, res) => {
     }
 })
 
-exports.api_user = functions.https.onRequest(async (req, res) => {
+exports.user = functions.https.onRequest(async (req, res) => {
     functions.logger.info("api_users endpoint requested", { structuredData: true });
     const auth = req.headers.authorization
     const [key, secret] = Buffer.from(auth.split('Basic ')[1], 'base64').toString('ascii').split(':')
@@ -129,10 +131,49 @@ exports.verify = functions.https.onRequest(async (req, res) => {
     }
 })
 
-exports.newUserSignup = functions.auth.user().onCreate((user) => {
+exports.newUserSignup = functions.auth.user().onCreate(async (user) => {
     // create a new customer instance in firestore db,
     // create key, and secret
     // create analytics things.
-    functions.logger.debug(user)
+    try {
+        functions.logger.debug(user)
+        let data = {}
 
+        let req_keys = ['uid', 'email', 'emailVerified', 'displayName', 'photoUrl', 'phoneNumber']
+
+        for (let key of req_keys) {
+            // console.log(key)
+            if (has(user, key)) {
+                data[key] = user[key]
+            }
+        }
+
+        data['key'] = randomBytes(99).toString('hex')
+
+        data['secret'] = 'xxxxxx_____GENERATE_____YOUR_____NEW_____SECRET_____NOW_____BY_____CLICKING_____GENERATE_____SECRET_____BUTTON._____xxxxxx'
+
+        data['lastSecretGenerated'] = null
+
+        const resp = await db.collection('customers').doc(user['uid']).set({ ...data })
+        functions.logger.debug(resp)
+    } catch (error) {
+        functions.logger.error(error, { uid: user.uid, name: user.displayName, email: user.email })
+    }
+})
+
+
+exports.generateSecret = functions.https.onCall(async (data, context) => {
+    try {
+        const secret = randomBytes(99).toString('hex')
+        const secretKey = secret.split('').map((e, i) => i <= 190 ? 'x' : e).join('')
+        functions.logger.debug(secret, secretKey, data, context.auth)
+        await db.collection('customers').doc(context.auth.uid).update({
+            'secret': secretKey,
+            'lastSecretGenerated': FieldValue.serverTimestamp()
+        })
+
+        return { secret }
+    } catch (error) {
+        throw new functions.https.HttpsError('internal', 'Something happened during secret creation.')
+    }
 })

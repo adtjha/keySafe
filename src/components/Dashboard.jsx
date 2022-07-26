@@ -1,13 +1,12 @@
 import { useActor } from "@xstate/react";
-import React, { useContext, useEffect, useState } from "react";
-import { Link, Route, Routes } from "react-router-dom";
+import React, { useContext } from "react";
+import { Link } from "react-router-dom";
 import { GlobalStateContext } from "../App";
-import { ApiDetails } from "./ApiDetails";
 
 export const Dashboard = () => {
   const apis = [1, 2, 3];
   const globalServices = useContext(GlobalStateContext);
-  const [state, send] = useActor(globalServices.authService);
+  const [state] = useActor(globalServices.authService);
 
   return (
     <React.Fragment>

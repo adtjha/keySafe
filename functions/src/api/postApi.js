@@ -14,7 +14,40 @@ async function postApi(data, keyData, res) {
                 throw new Error(`${key} not found, cannot be empty`);
             }
         }
-        data['user'] = db.doc(`customers/${keyData.id}`);
+        data['customerRef'] = db.doc(`customers/${keyData.id}`);
+        data['customerId'] = keyData.uid
+
+        data['lastSuccessfulAttempt'] = null
+
+        data['successfulAttempts'] = {
+            all: 0,
+            day: 0,
+            hour: 0,
+            minute: 0,
+            month: 0,
+            week: 0
+        }
+
+        data['lastFailedAttempt'] = null
+
+        data['failedAttempts'] = {
+            all: 0,
+            day: 0,
+            hour: 0,
+            minute: 0,
+            month: 0,
+            week: 0
+        }
+
+        data['failedAttemptsReason'] = {
+            'key&SecretNotMatches': 0,
+            'key&SecretNotPresent': 0,
+            'keyNotMatches': 0,
+            'keyNotPresent': 0,
+            'secretNotMatches': 0,
+            'secretNotPresent': 0
+        }
+
         const apiDocId = createHash('md5').update(`${keyData.key}_${data.url}`).digest('hex');
         // store in firestore db
         const response = await db.collection('api').doc(apiDocId).set(data);

@@ -28,7 +28,7 @@ function App() {
 
   return (
     <GlobalStateContext.Provider value={{ authService }}>
-      <div className='App'>
+      <div className='App h-screen'>
         <Home />
       </div>
     </GlobalStateContext.Provider>

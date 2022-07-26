@@ -6,4 +6,9 @@ export const authActions = {
     clearError: assign({ error: null }),
     setAuth: assign({ auth: (_, event) => event.data }),
     clearAuth: assign({ user: null, auth: null }),
+    setKey: assign({
+        user: (context, event) => {
+            return { ...context.user, secret: event.data }
+        }
+    })
 }
