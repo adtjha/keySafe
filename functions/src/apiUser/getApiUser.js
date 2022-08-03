@@ -1,10 +1,11 @@
 const { getFirestore } = require("firebase-admin/firestore");
+const { createHash } = require('crypto');
 const functions = require("firebase-functions");
 const db = getFirestore();
 
 
 
-async function getApi(keyData, res) {
+async function getApiUser(keyData, data, res) {
     /**
      * api users failing frequently
      *      key
@@ -12,13 +13,14 @@ async function getApi(keyData, res) {
      *      key & secret both
      */
     try {
-        functions.logger.info(`api : get all api endpoints connected to user`);
-        const userRef = db.doc(`users/${keyData.id}`);
-        const response = await db.collection('api').where('customerId', '==', keyData.customerId).get();
+        functions.logger.info(`api : get all users connected to api endpoints`);
+        const apiDocId = createHash('md5').update(`${keyData.key}_${data.url}`).digest('hex');
+        const apiDocIdRef = db.collection('api').doc(apiDocId)
+        const response = await db.collection('users').where('api', '==', apiDocIdRef).get();
         if (response.empty) {
             res.status(404).send({
-                userRef,
-                message: 'No api\'s connected to this user'
+                apiDocId,
+                message: 'No user connected to this endpoint'
             });
         } else {
             let docResponse = [];
@@ -36,4 +38,4 @@ async function getApi(keyData, res) {
         res.status(500).send({ error });
     }
 }
-exports.getApi = getApi;
+exports.getApiUser = getApiUser;

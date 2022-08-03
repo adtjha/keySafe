@@ -1,28 +1,17 @@
 import { configureStore, createSlice } from '@reduxjs/toolkit'
 
-const initialUserState = {
-    displayName: '',
-    email: '',
-    photoURL: '',
-    emailVerified: '',
-    uid: '',
-}
-
-const authSlice = createSlice({
-    name: 'auth',
-    initialState: initialUserState,
+const apiSlice = createSlice({
+    name: 'api',
+    initialState: {},
     reducers: {
-        addUserData: (state, action) => {
-            return { ...action.payload, ...state }
-        },
-        removeUserData: (state) => {
-            return initialUserState
+        addApiData: (state, action) => {
+            return { ...state, ...action.payload }
         }
     }
 })
 
-export const { addUserData, removeUserData } = authSlice.actions
+export const { addApiData } = apiSlice.actions
 
 export const store = configureStore({
-    reducer: authSlice.reducer
+    reducer: apiSlice.reducer
 })

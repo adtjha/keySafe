@@ -1,22 +1,24 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import { collection, doc, onSnapshot } from "firebase/firestore";
+import React, { useEffect, useState } from "react";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import { db } from "../firebase";
 import { DashboardWrapper } from "./DashboardWrapper";
 
-export const ApiDetails = () => {
-  const new_secret =
-    "80cb3793396a385efb0ca6b571ec9de5f0c64fbbf52aa4d1e9d14a356075efa08d739270fe74907ad52639076217a67bdd28c66201ab46e9219be82699100cb1e3418f9eace6bccd39844db8454ae57995c12352c21678dc1255dec3e4034ef5b2db84";
-  const api = {
-    key: "0b4cd815cc39ae678a7bcb1d894209f48af9621c82f221d15c38273fef8cfbe6ef564bb8f7a95b59c117e9afd8c11df6af7a5ea4264f2d729572e587726bbd792ea8579a1dd94147edab735de351e4058207e6eb73938905ac14a77d200cc1105794eb",
-    secret:
-      "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx399f3c",
-    name: "String Concatenator",
-    url: "https://somerandomserver.com/youfunction/stringConcatenator",
-    timesCalled: "29",
-    secretGenerationCount: 0,
-    lastCall: Date.now(),
-  };
+export const ApiDetails = ({ apiName, apiId }) => {
+  let navigate = useNavigate();
+  let location = useLocation();
+
+  let { key } = useParams();
+  console.log({ key, apiName, apiId });
 
   const names = {
+    uid: "UID",
+    createdAt: "Created At",
+    lastVerified: "Last Verfied",
+    lastSecretRegenerate: "Last Secret Regenerate",
+    email: "Email",
+    lastKeyRegenerate: "Last Key Regenerate",
+    apiId: "API ID",
     name: "Name",
     url: "URL",
     key: "API Key",
@@ -26,12 +28,35 @@ export const ApiDetails = () => {
     lastCall: "Last Call",
   };
 
+  const getLink = (link) => {
+    let p = link.split("/");
+    p.pop();
+    p.pop();
+    return p.join("/");
+  };
+
+  const [user, setUser] = useState({});
+  const [uid, setUid] = useState({});
+
+  useEffect(() => {
+    const unsub = onSnapshot(doc(db, "users", key), (doc) => {
+      console.log(doc.data());
+      setUser(doc.data());
+      setUid(doc.id);
+    });
+    return () => unsub();
+  }, []);
+
+  useEffect(() => {
+    console.log(user);
+  }, [user]);
+
   return (
-    <DashboardWrapper>
-      <div className='relative w-full flex flex-row items-stretch justify-center'>
-        <Link
-          to='/api'
-          className='absolute left-10 hover:bg-gray-200 rounded-full p-2'>
+    <>
+      {/* <div className='relative w-full flex flex-row items-stretch justify-center'>
+        <button
+          onClick={() => navigate(getLink(location.pathname))}
+          className='absolute left-10 hover:bg-stone-200 rounded-full p-2'>
           <svg
             xmlns='http://www.w3.org/2000/svg'
             className='h-6 w-6'
@@ -45,19 +70,35 @@ export const ApiDetails = () => {
               d='M11 17l-5-5m0 0l5-5m-5 5h12'
             />
           </svg>
-        </Link>
-        <div className='text-2xl font-bold'>API : {api.name}</div>
+        </button>
+        <div className='text-2xl font-bold'>API : {apiName}</div>
+      </div> */}
+      <div className='w-11/12 m-auto overflow-hidden flex flex-wrap items-stretch justify-between gap-2'>
+        {Object.entries(user).map(([key, value]) => {
+          if (
+            ["createdAt", "lastKeyRegenerate", "lastSecretRegenerate"].includes(
+              key
+            )
+          ) {
+            value = new Date(value["seconds"] * 1000).toUTCString();
+          } else if (!value) {
+            value = "-";
+          }
+          console.log(key, value);
+          return (
+            <div
+              key={key}
+              className='w-auto flex-grow flex flex-col items-start p-4 border-2 border-stone-200 hover:bg-stone-200 rounded-md cursor-copy'>
+              <h1 className='text-stone-400 tracking-wider text-xs font-bold'>
+                {names[key]}
+              </h1>
+              <h3 className='break-all text-stone-800 font-medium text-left'>
+                {value}
+              </h3>
+            </div>
+          );
+        })}
       </div>
-      <div className='w-11/12 overflow-hidden flex flex-wrap items-stretch justify-between gap-2'>
-        {Object.keys(api).map((k) => (
-          <div
-            key={k}
-            className='w-auto flex-grow flex flex-col items-start p-4 border-2 border-gray-200 hover:bg-gray-200 rounded-md cursor-copy'>
-            <h1 className='text-gray-600 text-sm mb-1'>{names[k]}</h1>
-            <h3 className='break-all text-left'>{api[k]}</h3>
-          </div>
-        ))}
-      </div>
-    </DashboardWrapper>
+    </>
   );
 };

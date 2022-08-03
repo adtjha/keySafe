@@ -1,6 +1,6 @@
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth, db, loginWithGoogle } from "../../firebase";
-import { getDoc, doc } from 'firebase/firestore'
+import { getDoc, doc, getDocs, query, collection, where } from 'firebase/firestore'
 
 const userMapper = claims => ({
     id: claims.user_id,
@@ -51,5 +51,36 @@ export const authServices = {
     logoutUser: (context, event) => new Promise((resolve, reject) => signOut(auth).then(resolve).catch(reject)),
     checkSecret: (context, event) => new Promise((resolve, reject) => !context.user.lastSecretGenerated || context.user.secret.split('_').map(e => e !== '' && e).filter(e => e).includes('GENERATE') ? reject('secret not set') : resolve()),
     generateNewSecret: (context, event) => new Promise((resolve, reject) => event.data ? resolve(event.data) : reject('No Secret Key Preset')),
-    checkInternet: (context, event) => new Promise((resolve, reject) => navigator.onLine ? resolve('online') : reject('offline'))
+    checkInternet: (context, event) => new Promise((resolve, reject) => navigator.onLine ? resolve('online') : reject('offline')),
+    GetAPIsFromDB: (context, e) => {
+        console.log(context, e);
+        return getDocs(
+            query(
+                collection(db, "api"),
+                where("customerId", "==", context.fetchId)
+            )
+        )
+            .then((docSnap) => {
+                console.log(docSnap.docs.map(doc => ({ [doc.id]: doc.data() })))
+                return !docSnap.empty
+                    ? docSnap.docs.map((e) => ({ [e.id]: e.data() }))
+                    : "Customer does not exsist.";
+            })
+            .catch((e) => console.error(e));
+    },
+    hasData: (context, event) =>
+        new Promise((resolve, reject) => {
+            if (context.api) {
+                console.log('map => ', context.api)
+                context.api.map((e, i) => Object.keys(e)[0]
+                    === event.id && console.log(Object.keys(e)[0], event.id, e[event.id]) && resolve(event.id))
+                // context.api.forEach((data) => {
+                //     if (Object.keys(data) === event.id) {
+                //         resolve(data[event.id]);
+                //     }
+                // });
+            }
+            console.log('getting rejected')
+            reject(event.id);
+        }),
 }

@@ -1,3 +1,4 @@
+import { toast } from "react-toastify";
 import { assign } from "xstate";
 
 export const authActions = {
@@ -10,5 +11,8 @@ export const authActions = {
         user: (context, event) => {
             return { ...context.user, secret: event.data }
         }
-    })
+    }),
+    storeAPI: assign({ api: (_, event) => event.data, fetchId: null }),
+    notifySuccess: (ctx) => toast("Data has been fetched."),
+    saveFetchId: assign({ fetchId: (_, event) => event.data })
 }

@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { connectAuthEmulator, getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
-import { connectFirestoreEmulator, getFirestore } from "firebase/firestore";
+import { connectFirestoreEmulator, enableIndexedDbPersistence, getFirestore } from "firebase/firestore";
 import { connectFunctionsEmulator, getFunctions, httpsCallable } from 'firebase/functions'
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -37,3 +37,21 @@ export const generateSecret = httpsCallable(functions, 'generateSecret');
 
 // console.log('here')
 // generateSecret({ hello: 'world' }).then(e => console.log(e)).catch(e => console.error(e))
+
+
+enableIndexedDbPersistence(db)
+    .catch((err) => {
+        if (err.code === 'failed-precondition') {
+            console.log(`
+            Multiple tabs open, persistence can only be enabled
+            in one tab at a a time.
+            `)
+            // ...
+        } else if (err.code === 'unimplemented') {
+            console.log(`
+            The current browser does not support all of the
+            features required to enable persistence.
+            `)
+            // ...
+        }
+    });

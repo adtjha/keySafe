@@ -58,39 +58,39 @@ async function postApiUser(data, res) {
 
         data['key'] = `${api['keyStartString']}_${randomBytes(99 - api['keyStartString'].length).toString('hex')}`;
 
-        data['api'] = db.doc(`api/${apiDocId}`);
+        data['apiId'] = apiDocId;
 
         let secretKey = randomBytes(99).toString('hex');
         data['secret'] = createHash('md5').update(`${secretKey}`).digest('hex');
         // data['createdAt'] = Timestamp.now()
         data['createdAt'] = FieldValue.serverTimestamp();
         data['lastVerified'] = null;
-        data['timesVerified'] = {
-            'minute': 0,
-            'hour': 0,
-            'day': 0,
-            'week': 0,
-            'month': 0,
-            'all': 0
-        };
+        // data['timesVerified'] = {
+        //     'minute': 0,
+        //     'hour': 0,
+        //     'day': 0,
+        //     'week': 0,
+        //     'month': 0,
+        //     'all': 0
+        // };
         data['lastSecretRegenerate'] = FieldValue.serverTimestamp();
-        data['secretRegenerationCount'] = {
-            'minute': 0,
-            'hour': 0,
-            'day': 0,
-            'week': 0,
-            'month': 0,
-            'all': 0
-        };
+        // data['secretRegenerationCount'] = {
+        //     'minute': 0,
+        //     'hour': 0,
+        //     'day': 0,
+        //     'week': 0,
+        //     'month': 0,
+        //     'all': 0
+        // };
         data['lastKeyRegenerate'] = FieldValue.serverTimestamp();
-        data['keyRegenerationCount'] = {
-            'minute': 0,
-            'hour': 0,
-            'day': 0,
-            'week': 0,
-            'month': 0,
-            'all': 0
-        };
+        // data['keyRegenerationCount'] = {
+        //     'minute': 0,
+        //     'hour': 0,
+        //     'day': 0,
+        //     'week': 0,
+        //     'month': 0,
+        //     'all': 0
+        // };
 
         const keyHash = createHash('md5').update(`${data['key']}`).digest('hex');
 

@@ -6,7 +6,7 @@ const db = getFirestore();
 
 
 
-async function postVerify(data, key, secret, res) {
+async function postVerify(data, res) {
     let userRef, apiRef
     try {
         // functions.logger.debug(Object.keys(data), { structuredData: true });
@@ -21,7 +21,7 @@ async function postVerify(data, key, secret, res) {
         const resp = await db.collection('users').doc(keyHash).get();
 
         if (!resp.exists) {
-            throw new Error(`key does not match. ${key} ${keyHash}`);
+            throw new Error(`key does not match. ${data['key']} ${keyHash}`);
         }
 
         // apiRef = db.collection(resp.data().api);
