@@ -63,15 +63,15 @@ export const Dashboard = () => {
       <div className='text-2xl font-bold'>
         {state.context.user.displayName} API's
       </div>
-      <div className='w-fit rounded-md space-y-4'>
+      {/* <div className='w-fit rounded-md space-y-4'>
         <Link
           to='api/new'
           className='bg-white hover:bg-stone-100 py-2 px-4 rounded-lg border border-transparent border-gray-400'>
           Create new API
         </Link>
-      </div>
+      </div> */}
       <div className='w-full'>
-        <ul className='w-fit p-2 rounded-md flex flex-wrap items-stretch justify-between gap-4'>
+        <ul className='w-full p-2 rounded-md flex flex-wrap items-center justify-between gap-4'>
           {state.value?.loggedIn?.apiData !== "idle" && <li>Loading...</li>}
           {state.value?.loggedIn?.apiData === "idle" &&
             !state.context.error &&
