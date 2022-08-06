@@ -27,7 +27,7 @@ const db = getFirestore();
 */
 
 
-async function postApiUser(data, res) {
+async function post(data, res) {
     try {
         // functions.logger.debug({ ...data }, typeof data, { structuredData: true });
         const req_keys = ['url'];
@@ -103,4 +103,4 @@ async function postApiUser(data, res) {
         return;
     }
 }
-exports.postApiUser = postApiUser;
+exports.post = post;

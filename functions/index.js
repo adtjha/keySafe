@@ -10,9 +10,9 @@ const { postApi } = require("./src/api/postApi");
 const { getApi } = require("./src/api/getApi");
 const { postVerify } = require("./src/verify/postVerify");
 const { deleteAPI } = require("./src/api/deleteAPI");
-const { postApiUser } = require("./src/apiUser/postApiUser");
-const { getApiUser } = require("./src/apiUser/getApiUser");
-const { patchApiUser } = require("./src/apiUser/patchApiUser");
+const { post } = require("./src/user/post");
+const { get } = require("./src/user/get");
+const { patch } = require("./src/user/patch");
 const has = require('has');
 
 // // Create and Deploy Your First Cloud Functions
@@ -108,13 +108,13 @@ exports.user = functions.https.onRequest(async (req, res) => {
     let data = req.body.data
     switch (req.method) {
         case 'GET':
-            await getApiUser(keyData, data, res)
+            await get(keyData, data, res)
             break;
         case 'POST':
-            await postApiUser(data, res)
+            await post(data, res)
             break;
         case 'PATCH':
-            await patchApiUser(data, res)
+            await patch(data, res)
             break;
         case 'DELETE':
             res.send("delete an api key, seceret")

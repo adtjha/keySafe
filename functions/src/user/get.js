@@ -5,7 +5,7 @@ const db = getFirestore();
 
 
 
-async function getApiUser(keyData, data, res) {
+async function get(keyData, data, res) {
     /**
      * api users failing frequently
      *      key
@@ -38,4 +38,4 @@ async function getApiUser(keyData, data, res) {
         res.status(500).send({ error });
     }
 }
-exports.getApiUser = getApiUser;
+exports.get = get;

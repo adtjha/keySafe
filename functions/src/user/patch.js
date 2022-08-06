@@ -6,7 +6,7 @@ const db = getFirestore();
 
 
 
-async function patchApiUser(data, res) {
+async function patch(data, res) {
     try {
         functions.logger.debug({ ...data }, typeof data, { structuredData: true });
         const req_keys = ['key', 'resetKey', 'resetSecret'];
@@ -49,4 +49,4 @@ async function patchApiUser(data, res) {
         return;
     }
 }
-exports.patchApiUser = patchApiUser;
+exports.patch = patch;
