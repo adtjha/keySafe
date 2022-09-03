@@ -1,45 +1,77 @@
-import { useEffect } from "react";
 import { useContext } from "react";
 import { GlobalStateContext } from "../App";
+import importPage from "../images/Import_API_page.png";
+import apiDetails from "../images/API_Details_Page.png";
+import keySafeFlow from "../images/keySafe_Flow.png";
 
 export const LandingPage = () => {
   const globalServices = useContext(GlobalStateContext);
 
   return (
-    <>
-      <div className='w-full h-screen flex flex-col items-center justify-center gap-6'>
-        <h1 className='w-fit text-6xl font-bold'>
-          Secure your api without any hassle.
+    <div className='w-full mb-8 bg-background text-primary-text grid grid-cols-1 items-center justify-center gap-64'>
+      <div className='snap-start w-full h-screen flex flex-col items-center justify-center gap-6'>
+        <h1 className='w-fit text-8xl font-bold'>
+          <span className='block'>Secure your api</span>
+          <span className='block'>without any hassle.</span>
         </h1>
         <button
           onClick={() => globalServices.authService.send("LOGIN")}
-          className='flex flex-row items-center justify-evenly gap-2 border border-gray-400 p-2 rounded-md shadow-md'>
-          <svg
-            version='1.1'
-            xmlns='http://www.w3.org/2000/svg'
-            width='18px'
-            height='18px'
-            viewBox='0 0 48 48'
-            className=''>
-            <g>
-              <path
-                fill='#EA4335'
-                d='M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z'></path>
-              <path
-                fill='#4285F4'
-                d='M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z'></path>
-              <path
-                fill='#FBBC05'
-                d='M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z'></path>
-              <path
-                fill='#34A853'
-                d='M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z'></path>
-              <path fill='none' d='M0 0h48v48H0z'></path>
-            </g>
-          </svg>
-          <span>Login With Google</span>
+          className='absolute top-8 right-8 bg-[#FAFDF7] px-8 py-3 rounded-2xl text-lg font-medium hover:underline'>
+          Login
+        </button>
+        <button className='bg-primary-light mt-4 px-8 py-4 rounded-2xl text-lg font-medium hover:underline'>
+          Signup
         </button>
       </div>
-    </>
+      <div className='w-full h-full flex flex-col items-center justify-start pt-24 gap-12'>
+        <h1 className='w-fit text-8xl font-bold'>
+          <span className='block'>create api collections,</span>
+          <span className='block'>or import from yaml file.</span>
+        </h1>
+        <img
+          src={importPage}
+          alt='Screenshot of import page'
+          className='max-w-[90%] shadow-lg'
+        />
+      </div>
+      <div className='w-full h-full flex flex-col items-center justify-start pt-24 gap-12'>
+        <h1 className='w-fit text-8xl font-bold'>
+          <span className='block'>maintain keys and secret</span>
+          <span className='block'>for each user.</span>
+        </h1>
+        <img
+          src={apiDetails}
+          alt='Screenshot of import page'
+          className='max-w-[90%] shadow-lg'
+        />
+      </div>
+      <div className='w-full h-full flex flex-col items-center justify-start pt-24 gap-12'>
+        <h1 className='w-fit text-8xl font-bold'>
+          <span className='block'>random person tries to</span>
+          <span className='block'>access your api</span>
+        </h1>
+        <img
+          src={keySafeFlow}
+          alt='Screenshot of import page'
+          className='max-w-[60%]'
+        />
+      </div>
+      <div className='w-full h-full flex flex-col items-center justify-start pt-24 gap-12'>
+        <h1 className='w-fit text-8xl font-bold'>
+          <span className='block'>Pricing</span>
+        </h1>
+        <h1 className='w-fit text-8xl bg-primary-light px-12 py-6 rounded-2xl font-bold'>
+          Free For Now
+        </h1>
+        <h1 className='w-fit text-4xl font-bold text-primary-text-60'>
+          Chargeable in Future
+        </h1>
+      </div>
+      <div className='w-full h-screen flex flex-col items-center justify-center gap-6'>
+        <button className='bg-primary-light mt-4 px-8 py-4 rounded-2xl text-lg font-medium hover:underline'>
+          Try for a week now.
+        </button>
+      </div>
+    </div>
   );
 };

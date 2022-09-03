@@ -25,7 +25,7 @@ function App() {
 
   return (
     <GlobalStateContext.Provider value={{ authService }}>
-      <div className='App w-screen h-screen'>
+      <div className='App w-full h-screen scroll-smooth'>
         <ToastContainer />
         <Home />
       </div>

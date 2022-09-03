@@ -68,7 +68,7 @@ export const ApiUsers = () => {
             index
             element={
               <div className='w-full flex flex-wrap items-stretch justify-evenly gap-4'>
-                {/* <SearchBar /> */}
+                <SearchBar />
                 <table class='border-collapse table-fixed w-full text-sm text-left cursor-pointer font-mono'>
                   <thead>
                     <tr>
