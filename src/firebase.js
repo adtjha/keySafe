@@ -3,6 +3,7 @@ import { initializeApp } from "firebase/app";
 import { connectAuthEmulator, getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { connectFirestoreEmulator, enableIndexedDbPersistence, getFirestore } from "firebase/firestore";
 import { connectFunctionsEmulator, getFunctions, httpsCallable } from 'firebase/functions'
+import { connectStorageEmulator, getStorage } from "firebase/storage"
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -28,6 +29,9 @@ connectAuthEmulator(auth, "http://localhost:9099");
 
 export const db = getFirestore(app);
 connectFirestoreEmulator(db, 'localhost', 8080);
+
+export const storage = getStorage(app, "gs://apikeysafe.appspot.com");
+connectStorageEmulator(storage, "localhost", 9199);
 
 export const googleProvider = new GoogleAuthProvider();
 

@@ -22,6 +22,7 @@ const has = require('has');
 //   functions.logger.info("Hello logs!", {structuredData: true});
 //   response.send("Hello from Firebase!");
 // });
+
 const isValidKey = async (key, secret) => {
     let res, customersRef = db.collection('customers'), keyData = {}, secretHash = createHash('md5').update(secret).digest('hex');
     try {
@@ -142,7 +143,7 @@ exports.verify = functions.https.onRequest(async (req, res) => {
             res.sendStatus(404)
             break;
         case 'POST':
-            await postVerify(data, res);
+            await postVerify(data, req, res);
             break;
         case 'PATCH':
             res.sendStatus(404)

@@ -4,8 +4,6 @@ const functions = require("firebase-functions");
 const { getFirestore } = require('firebase-admin/firestore');
 const db = getFirestore();
 
-
-
 async function deleteAPI(data, keyData, res) {
     try {
         const req_keys = ['url'];

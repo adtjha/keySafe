@@ -1,0 +1,78 @@
+### Offerings:
+
+- API Authentication & Authorization
+- Free API Documentation (creating/editing/hosting)
+- API analytics
+
+### STEPS Involved :
+
+- your backend sends api request containing
+  - \_key
+  - \_secret
+  - \_access_key
+  - \_access_secret
+  - \_session_key (if not present a new one is to be generated every session)
+
+### Dashboard Analytics
+
+### API Analytics
+
+1. Users Count
+2. successful api requests
+3. failed api requests
+   - incorrect key
+   - incorrect secret
+4. data size per api request
+5. location of api requests
+6. type of device api being requested
+   1. from web browser
+   2. from desktop app
+   3. from mobile web browser
+   4. from mobile app
+7.
+
+Total
+
+API User Analytics
+
+Total API Requests
+
+- current from start of the year
+- current from start of the month
+- current from start of the week
+- current from selected date
+
+API Requests vs Previous
+
+- current month vs previous months
+- current year vs previous years
+
+API Decline (Incorrect Key)
+
+- current from start of the year
+- current from start of the month
+- current from start of the week
+- current from selected date
+
+API Decline (Incorrect Secret)
+
+- current from start of the year
+- current from start of the month
+- current from start of the week
+- current from selected date
+
+API DECLINE (Other Reasons)
+
+- current from start of the year
+- current from start of the month
+- current from start of the week
+- current from selected date
+
+API IP LOCATION MAP
+
+USER REQUEST API MAP
+
+API REQUEST RESOLVE PATH
+
+- LOG TIME, OF FUNCTION EXECUTION TIMELINE,
+- EACH OF CHILD FUNCTIONS CALL CAN BE LOGGED AND YOU COULD SEE WHAT & HOW THE FUNCTION MOVED.

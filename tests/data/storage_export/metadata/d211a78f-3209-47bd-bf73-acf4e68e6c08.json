@@ -1,0 +1,19 @@
+{
+  "name": "multilineData.csv",
+  "bucket": "apikeysafe.appspot.com",
+  "metageneration": 1,
+  "generation": 1669738410766,
+  "contentType": "text/csv",
+  "storageClass": "STANDARD",
+  "contentDisposition": "inline",
+  "downloadTokens": [
+    "38422aa5-0f7b-4834-bdc0-0dd6021a96ac"
+  ],
+  "etag": "fDn6JvwJVlgWtm/q1/+4ecjDPaY",
+  "customMetadata": {},
+  "timeCreated": "2022-11-29T16:13:30.766Z",
+  "updated": "2022-11-29T16:13:30.766Z",
+  "size": 413683,
+  "md5Hash": "x+VVgge7dHE8176xdfNRug==",
+  "crc32c": "1458212299"
+}

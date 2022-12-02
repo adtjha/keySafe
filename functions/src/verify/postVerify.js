@@ -2,11 +2,12 @@ const { getFirestore, Timestamp, FieldValue } = require('firebase-admin/firestor
 const { createHash, timingSafeEqual } = require('crypto');
 const has = require('has');
 const functions = require("firebase-functions");
+const { saveReqRes } = require('../saveReqRes');
 const db = getFirestore();
 
 
 
-async function postVerify(data, res) {
+async function postVerify(data, req, res) {
     let userRef, apiRef
     try {
         // functions.logger.debug(Object.keys(data), { structuredData: true });
@@ -30,6 +31,7 @@ async function postVerify(data, res) {
         const result = timingSafeEqual(Buffer.from(secretHash), Buffer.from(resp.data().secret));
 
         if (result) {
+            saveReqRes(req, res, { ...data, secret: secretHash, lastCheckedAt: Timestamp.now(), isVerified: true });
             res.status(200).send({ ...data, secret: secretHash, lastCheckedAt: Timestamp.now(), isVerified: true });
         } else {
             throw new Error('secret does not match.');

@@ -20,7 +20,7 @@ export const DashboardWrapper = ({ children }) => {
   };
 
   return (
-    <div className='pt-[54px] h-full overflow-x-hidden flex flex-row items-stretch justify-evenly'>
+    <div className='h-full bg-background overflow-x-hidden flex flex-col items-stretch justify-evenly space-y-2'>
       {state.context.user.lastSecretGenerated === null && (
         <div className=''>
           <div className='absolute z-30 inset-0 w-full lg:w-1/2 h-fit m-auto bg-white py-4 px-8 rounded-md flex flex-col items-center space-y-4'>
@@ -49,7 +49,7 @@ export const DashboardWrapper = ({ children }) => {
         </div>
       )}
       <Navbar />
-      <div className='m-auto w-full h-full bg-white p-4 flex flex-col items-center justify-start text-gray-600 space-y-4'>
+      <div className='m-auto w-full h-full bg-white p-4 flex flex-col items-center justify-start text-gray-600 space-y-8 text-primary-text'>
         {children}
       </div>
     </div>
