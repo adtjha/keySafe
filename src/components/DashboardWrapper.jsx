@@ -49,7 +49,7 @@ export const DashboardWrapper = ({ children }) => {
         </div>
       )}
       <Navbar />
-      <div className='m-auto w-full h-full bg-white p-4 flex flex-col items-center justify-start text-gray-600 space-y-8 text-primary-text'>
+      <div className='relative m-auto w-full h-full bg-white py-4 px-16 mb-16 flex flex-col items-center justify-start space-y-16 text-primary-text'>
         {children}
       </div>
     </div>

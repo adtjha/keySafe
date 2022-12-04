@@ -58,36 +58,41 @@ export const ApiDetails = ({ apiName, apiId }) => {
   };
 
   return (
-    <>
-      <div className='relative w-full grid grid-cols-6 justify-items-center mb-16 gap-8'>
-        <div className='col-span-2 w-full m-auto overflow-hidden flex flex-wrap items-stretch justify-between gap-4'>
-          {Object.entries(user).map(([key, value]) => {
-            if (
-              [
-                "createdAt",
-                "lastKeyRegenerate",
-                "lastSecretRegenerate",
-              ].includes(key)
-            ) {
-              value = new Date(value["seconds"] * 1000).toUTCString();
-            } else if (!value) {
-              value = "-";
-            }
-            console.log(key, value);
-            return (
-              <div
-                key={key}
-                onClick={() => copyData(names[key], value)}
-                className='group relative w-auto flex-grow flex flex-col items-start p-4 font-mono text-primary-text bg-primary-light-30 rounded-md cursor-pointer'>
-                <h1 className='text-primary-text-60 tracking-wider text-xs uppercase font-sans'>
-                  {names[key]}
-                </h1>
-                <h3 className='break-all text-primary-text group-hover:font-bold text-left group-hover:underline'>
+    <React.Fragment>
+      <div className='w-full grid grid-cols-4 grid-flow-row-dense items-center justify-center gap-8'>
+        {new Array(8).fill("a").map((e, i, ar) => (
+          <React.Fragment>
+            <Chart filename={"aapl.csv"}></Chart>
+          </React.Fragment>
+        ))}
+      </div>
+      <div className='w-full m-auto overflow-hidden flex flex-wrap items-stretch justify-between gap-2 border-primary-text'>
+        {Object.entries(user).map(([key, value]) => {
+          if (
+            ["createdAt", "lastKeyRegenerate", "lastSecretRegenerate"].includes(
+              key
+            )
+          ) {
+            value = new Date(value["seconds"] * 1000).toUTCString();
+          } else if (!value) {
+            value = "-";
+          }
+          console.log(key, value);
+          return (
+            <div
+              key={key}
+              onClick={() => copyData(names[key], value)}
+              className='group border border-dashed border-primary-text-30 hover:border-solid hover:border-primary-medium hover:bg-primary-light-30/50 rounded-md relative w-auto flex-grow flex flex-col items-start p-4 text-primary-text cursor-pointer'>
+              <h1 className='text-primary-text-60/50 tracking-wider text-xs uppercase font-sans font-bold'>
+                {names[key]}
+              </h1>
+              <div className='w-full flex flex-row gap-4'>
+                <h3 className='break-all text-primary-text font-mono text-left'>
                   {value}
                 </h3>
                 <div
                   title='copy value to clipboard'
-                  className='absolute right-2 bottom-2 cursor-copy'>
+                  className='opacity-0 group-hover:opacity-100 absolute right-2 bottom-2 cursor-copy'>
                   <svg
                     xmlns='http://www.w3.org/2000/svg'
                     className='h-5 w-5 text-primary-text-30 group-hover:text-primary-text-60'
@@ -98,36 +103,27 @@ export const ApiDetails = ({ apiName, apiId }) => {
                   </svg>
                 </div>
               </div>
-            );
-          })}
-        </div>
-        <div className='relative h-[848px] col-span-4 w-full overflow-y-scroll flex flex-col items-start justify-start gap-4 border-2 border-dashed border-secondary-dark/40 p-2 rounded-lg'>
-          <div className='sticky -top-4 pt-4 bg-background w-auto flex flex-wrap items-start justify-start gap-4 p-2 pl-2'>
-            <button
-              onClick={() => {}}
-              className='col-span-2 w-fit bg-secondary-dark/80 hover:bg-secondary-dark  text-secondary-text font-mono text-sm hover:underline hover:font-bold hover:drop-shadow-lg px-4 py-2 rounded-md'>
-              Re-generate Secret Key
-            </button>
-            <button
-              onClick={() => {}}
-              className='col-span-2 w-fit bg-secondary-dark/80 hover:bg-secondary-dark  text-secondary-text font-mono text-sm hover:underline hover:font-bold hover:drop-shadow-lg px-4 py-2 rounded-md'>
-              Re-issue API Key & Secret
-            </button>
-            <button
-              onClick={() => {}}
-              className='col-span-2 w-fit bg-red-500/80 hover:bg-red-500 text-secondary-text font-mono text-sm hover:underline hover:font-bold hover:drop-shadow-lg px-4 py-2 rounded-md'>
-              Delete API User
-            </button>
-          </div>
-          <div className='w-full grid grid-cols-2 grid-flow-row-dense items-center justify-center gap-8'>
-            {new Array(6).fill("a").map((e, i, ar) => (
-              <React.Fragment>
-                <Chart filename={"aapl.csv"}></Chart>
-              </React.Fragment>
-            ))}
-          </div>
-        </div>
+            </div>
+          );
+        })}
       </div>
-    </>
+      <div className='w-full items-center flex flex-wrap justify-center gap-4 p-2'>
+        <button
+          onClick={() => {}}
+          className='col-span-2 w-fit bg-secondary-dark/80 hover:bg-secondary-dark  text-secondary-text font-mono text-sm hover:underline hover:font-bold hover:drop-shadow-lg px-4 py-2 rounded-md'>
+          Re-generate Secret Key
+        </button>
+        <button
+          onClick={() => {}}
+          className='col-span-2 w-fit bg-secondary-dark/80 hover:bg-secondary-dark  text-secondary-text font-mono text-sm hover:underline hover:font-bold hover:drop-shadow-lg px-4 py-2 rounded-md'>
+          Re-issue API Key & Secret
+        </button>
+        <button
+          onClick={() => {}}
+          className='col-span-2 w-fit bg-red-500/80 hover:bg-red-500 text-secondary-text font-mono text-sm hover:underline hover:font-bold hover:drop-shadow-lg px-4 py-2 rounded-md'>
+          Delete API User
+        </button>
+      </div>
+    </React.Fragment>
   );
 };

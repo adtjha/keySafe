@@ -5,6 +5,7 @@ import { db } from "../firebase";
 import { ApiDetails } from "./Details";
 import { DashboardWrapper } from "./DashboardWrapper";
 import { SearchBar } from "./SearchBar";
+import { Chart } from "./Chart";
 
 export const ApiUsers = () => {
   let { apiId, apiName } = useParams();
@@ -43,34 +44,44 @@ export const ApiUsers = () => {
   return (
     <DashboardWrapper>
       <React.Fragment>
-        <div className='w-full relative flex flex-row items-center justify-center'>
-          <button
-            onClick={() => navigate(-1)}
-            className='absolute left-0 hover:bg-primary-light-30 rounded-full p-2 w-min'>
-            <svg
-              xmlns='http://www.w3.org/2000/svg'
-              className='h-6 w-6'
-              fill='none'
-              viewBox='0 0 24 24'
-              stroke='currentColor'
-              strokeWidth={2}>
-              <path
-                strokeLinecap='round'
-                strokeLinejoin='round'
-                d='M11 17l-5-5m0 0l5-5m-5 5h12'
-              />
-            </svg>
-          </button>
-          <div className='w-full text-4xl font-bold'>API : {apiName}</div>
+        <div className='sticky top-0 w-full'>
+          <div className='w-full relative flex flex-row items-center justify-between'>
+            <button
+              onClick={() => navigate(-1)}
+              className='absolute -left-12 group hover:bg-primary-light-30 rounded-full p-2 w-min'>
+              <svg
+                xmlns='http://www.w3.org/2000/svg'
+                className='h-6 w-6 opacity-30 group-hover:opacity-100'
+                fill='none'
+                viewBox='0 0 24 24'
+                stroke='currentColor'
+                strokeWidth={2}>
+                <path
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  d='M11 17l-5-5m0 0l5-5m-5 5h12'
+                />
+              </svg>
+            </button>
+            <div className='w-auto text-2xl font-bold'>API : {apiName}</div>
+            <div className='w-[45%]'>
+              <SearchBar />
+            </div>
+          </div>
         </div>
+
         <Routes>
           <Route
             path='/'
             index
             element={
               <React.Fragment>
-                <div className='w-[45%]'>
-                  <SearchBar />
+                <div className='w-full h-64 grid grid-cols-4 grid-flow-row-dense items-center justify-center gap-8'>
+                  {new Array(8).fill("a").map((e, i, ar) => (
+                    <React.Fragment>
+                      <Chart filename={"aapl.csv"}></Chart>
+                    </React.Fragment>
+                  ))}
                 </div>
                 <table class='border-collapse table-fixed w-full text-sm text-left cursor-pointer font-mono'>
                   <thead>

@@ -2,7 +2,7 @@ import React from "react";
 
 export const SearchBar = ({ placeholder }) => {
   return (
-    <div className='w-full mb-4'>
+    <div className='w-full'>
       <form className='flex items-center'>
         <label htmlFor='simple-search' className='sr-only'>
           Search

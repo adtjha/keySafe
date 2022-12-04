@@ -8,8 +8,8 @@ export const Navbar = () => {
   const [state, send] = useActor(globalServices.authService);
 
   return (
-    <div className='p-2 w-full flex flex-row items-center justify-center content-center space-x-8 bg-secondary-dark text-secondary-text'>
-      <div className='w-fit px-4 flex-grow flex flex-row items-center justify-start space-x-8'>
+    <div className='px-16 py-2 w-full flex flex-row items-center justify-center content-center space-x-8 bg-secondary-dark text-secondary-text'>
+      <div className='w-fit flex-grow flex flex-row items-center justify-start space-x-8'>
         <Link
           to='/'
           className='text-base font-bold font-mono flex flex-row items-center justify-evenly hover:underline px-2 hover:bg-primary-light hover:text-primary-text rounded-lg'>
