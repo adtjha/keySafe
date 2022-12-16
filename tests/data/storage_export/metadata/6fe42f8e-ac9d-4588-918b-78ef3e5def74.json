@@ -1,0 +1,19 @@
+{
+  "name": "aapl.csv",
+  "bucket": "apikeysafe.appspot.com",
+  "metageneration": 1,
+  "generation": 1670317540881,
+  "contentType": "text/csv",
+  "storageClass": "STANDARD",
+  "contentDisposition": "inline",
+  "downloadTokens": [
+    "4b4ef5cc-4907-4c1a-b31f-79cac35c5a66"
+  ],
+  "etag": "qksiQs9BEvczmHf4mcATat3P2mg",
+  "customMetadata": {},
+  "timeCreated": "2022-12-06T09:05:40.881Z",
+  "updated": "2022-12-06T09:05:40.881Z",
+  "size": 22707,
+  "md5Hash": "7oPuVEURWKkpk3ey4Dyz+Q==",
+  "crc32c": "3042167593"
+}

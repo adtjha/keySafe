@@ -8,9 +8,8 @@ const db = getFirestore();
 
 
 async function postVerify(data, req, res) {
-    let userRef, apiRef
     try {
-        // functions.logger.debug(Object.keys(data), { structuredData: true });
+        functions.logger.debug(data, { structuredData: true });
         const req_keys = ['key', 'secret', 'url'];
         for (let key of req_keys) {
             if (!has(data, key)) {
@@ -27,12 +26,12 @@ async function postVerify(data, req, res) {
 
         // apiRef = db.collection(resp.data().api);
 
-        const secretHash = createHash('md5').update(`${data['secret']}`).digest('hex');
-        const result = timingSafeEqual(Buffer.from(secretHash), Buffer.from(resp.data().secret));
+        // const secretHash = createHash('md5').update(`${data['secret']}`).digest('hex');
+        const result = timingSafeEqual(Buffer.from(createHash('md5').update(`${data['secret']}`).digest('hex')), Buffer.from(resp.data().secret));
 
         if (result) {
-            saveReqRes(req, res, { ...data, secret: secretHash, lastCheckedAt: Timestamp.now(), isVerified: true });
-            res.status(200).send({ ...data, secret: secretHash, lastCheckedAt: Timestamp.now(), isVerified: true });
+            saveReqRes(req, res, { ...data, secret: data['secret'], lastCheckedAt: Timestamp.now(), isVerified: true });
+            res.json({ ...data, secret: data['secret'], lastCheckedAt: Timestamp.now(), isVerified: true });
         } else {
             throw new Error('secret does not match.');
         }

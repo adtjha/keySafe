@@ -1,6 +1,6 @@
-const { initializeApp, applicationDefault, cert } = require('firebase-admin/app');
+const { initializeApp } = require('firebase-admin/app');
 const { getFirestore, FieldValue, Timestamp } = require('firebase-admin/firestore');
-const { randomBytes, createHash, timingSafeEqual } = require('crypto')
+const { randomBytes, createHash, timingSafeEqual, randomUUID } = require('crypto')
 
 initializeApp();
 const db = getFirestore()
@@ -14,6 +14,14 @@ const { post } = require("./src/user/post");
 const { get } = require("./src/user/get");
 const { patch } = require("./src/user/patch");
 const has = require('has');
+
+
+
+// Imports the Google Cloud Tasks library.
+const { CloudTasksClient } = require('@google-cloud/tasks');
+const { updateCountersAnalytics } = require('./src/analytics/updateCountersAnalytics');
+// Instantiates a client.
+const client = new CloudTasksClient();
 
 // // Create and Deploy Your First Cloud Functions
 // // https://firebase.google.com/docs/functions/write-firebase-functions
@@ -137,12 +145,18 @@ exports.verify = functions.https.onRequest(async (req, res) => {
         })
         return
     }
-    let data = req.body.data
+    // let data = req.body.data
     switch (req.method) {
         case 'GET':
             res.sendStatus(404)
             break;
         case 'POST':
+            const data = {}
+            data['key'] = req.get("X-KEYSAFE-API-KEY")
+            data['secret'] = req.get("X-KEYSAFE-API-SECRET")
+            data['runtime'] = req.get("X-KEYSAFE-RUN-TIME")
+            data['customerId'] = req.get("X-KEYSAFE-CUSTOMER-ID")
+            data['url'] = req.get("X-KEYSAFE-API-URL")
             await postVerify(data, req, res);
             break;
         case 'PATCH':
@@ -207,8 +221,12 @@ exports.generateSecret = functions.https.onCall(async (data, context) => {
 
 
 exports.getToken = functions.https.onRequest(async (req, res) => {
+    if (req.method !== 'POST') res.sendStatus(400)
     functions.logger.info("getToken endpoint requested", { structuredData: true });
+    console.log(req.headers)
     const auth = req.headers.authorization
+    const session_id = req.headers.session_id || randomUUID().toString()
+    console.log(auth)
     const [key, secret] = Buffer.from(auth.split('Basic ')[1], 'base64').toString('ascii').split(':')
     const { status, keyData } = await isValidKey(key, secret)
     functions.logger.debug(status, keyData);
@@ -237,7 +255,7 @@ exports.getToken = functions.https.onRequest(async (req, res) => {
         const token = randomBytes(16).toString('hex')
         const tokenHash = createHash('md5').update(token).digest('hex')
 
-        let dataKey = ({ key, secretHash, uid }) => ({ key, secretHash, customerId: uid })
+        let dataKey = ({ key, secretHash, uid }) => ({ key, secretHash, customerId: uid, sessionId: session_id })
 
         const resp = await db.collection('tokens').doc(tokenHash).set({
             token,
@@ -245,9 +263,241 @@ exports.getToken = functions.https.onRequest(async (req, res) => {
             createdAt: FieldValue.serverTimestamp(),
         })
 
-        res.status(200).send({ access_token: token })
+        res.status(200).send({ access_token: token, session_id })
     } catch (error) {
         functions.logger.error(error)
         res.status(500).send({ error })
+    }
+})
+
+// exports.analytics = functions.https.onRequest(async (req, res) => {
+//     functions.logger.info("analytics endpoint requested", { structuredData: true });
+//     const customerId = req.get('X-KEYSAFE-CUSTOMER-ID')
+//     const status = await db.collection('customers').doc(customerId).get();
+//     console.log(status.exists)
+//     if (!status.exists) {
+//         res.status(403).send({
+//             status
+//         })
+//         return
+//     }
+//     let data = JSON.parse(req.body)
+//     switch (req.method) {
+//         case 'GET':
+//             res.sendStatus(404)
+//             break;
+//         case 'POST':
+//             let resp, error;
+//             const analyticsRef = db.collection('customers').doc(customerId).collection('analytics')
+//             try {
+//                 resp = await analyticsRef.add({
+//                     data,
+//                     hash: createHash('md5').update(JSON.stringify(data)).digest('hex'),
+//                     createdAt: FieldValue.serverTimestamp(),
+//                     type: req.get('X-KEYSAFE-ANALYTICS-TYPE'),
+//                     session_id: req.get('X-KEYSAFE-ANALYTICS-SESSION-ID'),
+//                 });
+//             } catch (err) {
+//                 console.error(err)
+//                 error = err
+//             } finally {
+//                 if (error) res.status(500)
+//                 res.json({ data, documentId: resp.id });
+//             }
+//             break;
+//         case 'PATCH':
+//             res.sendStatus(404)
+//             break;
+//         case 'DELETE':
+//             res.sendStatus(404)
+//             break;
+//         default:
+//             break;
+//     }
+// })
+
+
+exports.pushAnalyticsToStack = functions.https.onRequest(async (req, res) => {
+    /**
+    * Recieves analytics from customers, has one job only,
+    * cleans the data, checks limits
+    * to push the analytics into queue, depending on the analytics type.
+    * store ip, location of server request, storing the api.
+    */
+    switch (req.method) {
+        case 'GET':
+            res.sendStatus(404)
+            break;
+        case 'POST':
+            const customerId = req.get('X-KEYSAFE-CUSTOMER-ID');
+            const status = await db.collection('customers').doc(customerId).get();
+            console.log(status.exists)
+            if (!status.exists) {
+                res.status(403).send({
+                    status
+                })
+                return
+            }
+
+            const type = req.get('task-type') || undefined
+            const sessionId = req.get('X-KEYSAFE-SESSION-ID');
+            const analytics = JSON.parse(req.body);
+
+            function removeNullAndUndefinedProperties(obj) {
+                const newObj = {};
+                for (const propName in obj) {
+                    if (obj.hasOwnProperty(propName)) {
+                        if (obj[propName] !== null && obj[propName] !== undefined) {
+                            newObj[propName] = obj[propName];
+                            if (typeof obj[propName] === "object") {
+                                newObj[propName] = removeNullAndUndefinedProperties(obj[propName]);
+                            }
+                        }
+                    }
+                }
+                return newObj;
+            }
+
+            const analyticPure = removeNullAndUndefinedProperties(analytics)
+
+            if (customerId && sessionId && analytics) {
+                const project = process.env.PROJECT_ID;
+                const queue = process.env.QUEUE_ID;
+                const location = process.env.LOCATION_ID;
+                const url = 'https://us-central1-apikeysafe.cloudfunctions.net/handleAnalytics';
+                // Construct the fully qualified queue name.
+                const parent = client.queuePath(project, location, queue);
+
+                const task = {
+                    httpRequest: {
+                        headers: {
+                            'Content-Type': 'text/plain',
+                            'task-created-at': Timestamp.now(),
+                            'task-type': type || 'fresh',
+                            'task-id': randomBytes(16).toString("hex"),
+                            'X-KEYSAFE-CUSTOMER-ID': customerId,
+                            'X-KEYSAFE-SESSION-ID': sessionId,
+                        },
+                        httpMethod: 'POST',
+                        url,
+                        body: JSON.stringify(analyticPure)
+                    },
+                };
+
+                // Send create task request.
+                const request = { parent: parent, task: task };
+                const [response] = await client.createTask(request);
+                res.json({ response, addedAt: Timestamp.now() })
+            } else {
+                res.sendStatus(403)
+            }
+            break;
+        case 'PATCH':
+            res.sendStatus(404)
+            break;
+        case 'DELETE':
+            res.sendStatus(404)
+            break;
+        default:
+            res.sendStatus(404)
+            break;
+    }
+})
+
+exports.handleAnalytics = functions.https.onRequest(async (req, res) => {
+    /**
+     * Stores the data in appropriate place,
+     * updates sharded counters related to customer, api, user, admin
+     */
+    switch (req.method) {
+        case 'GET':
+            res.sendStatus(404)
+            break;
+        case 'POST':
+            const analyticsData = JSON.parse(req.body)
+
+            const taskCreatedAt = req.get('task-created-at')
+            const taskId = req.get('task-id')
+            const type = req.get('task-type')
+            const customerId = req.get('X-KEYSAFE-CUSTOMER-ID');
+            const sessionId = req.get('X-KEYSAFE-SESSION-ID');
+
+            const retryCount = req.get('X-CloudTasks-TaskRetryCount') || undefined;
+            const retryReason = req.get('X-CloudTasks-TaskRetryReason') || undefined;
+            const previousResponse = req.get('X-CloudTasks-TaskPreviousResponse') || undefined;
+
+            let retry = {}
+
+            if (retryReason) {
+                retry = {
+                    ...retry,
+                    retryReason
+                }
+            }
+
+            if (previousResponse) {
+                retry = {
+                    ...retry,
+                    previousResponse
+                }
+            }
+
+            if (retryCount) {
+                retry = {
+                    ...retry,
+                    retryCount
+                }
+            }
+
+            let error, resp;
+            const analyticsRef = db.collection('customers').doc(customerId).collection('analytics')
+            try {
+                resp = await analyticsRef.add({
+                    task: {
+                        id: taskId,
+                        createdAt: taskCreatedAt,
+                        name: req.get('X-CloudTasks-TaskName'),
+                        ...retry
+                    },
+                    session_id: sessionId,
+                    customer_id: customerId,
+                    data: analyticsData,
+                    hash: createHash('md5').update(JSON.stringify(analyticsData)).digest('hex'),
+                    createdAt: FieldValue.serverTimestamp(),
+                    type: type,
+                });
+
+                // await updateCountersAnalytics({
+                //     task: {
+                //         id: taskId,
+                //         createdAt: taskCreatedAt,
+                //         name: req.get('X-CloudTasks-TaskName'),
+                //         ...retry
+                //     },
+                //     session_id: sessionId,
+                //     customer_id: customerId,
+                //     data: analyticsData,
+                //     hash: createHash('md5').update(JSON.stringify(analyticsData)).digest('hex'),
+                //     createdAt: FieldValue.serverTimestamp(),
+                //     type: type,
+                //     documentId: resp?.id
+                // })
+            } catch (err) {
+                console.error(err)
+                error = err
+            }
+
+            if (error) res.status(500).json({ error })
+            res.sendStatus(200);
+            break;
+        case 'PATCH':
+            res.sendStatus(404)
+            break;
+        case 'DELETE':
+            res.sendStatus(404)
+            break;
+        default:
+            res.sendStatus(404)
+            break;
     }
 })
