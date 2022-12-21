@@ -1,35 +1,18 @@
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
-import { Link, Route, Routes, useNavigate, useParams } from "react-router-dom";
-import { db } from "../firebase";
-import { ApiDetails } from "./Details";
-import { DashboardWrapper } from "./DashboardWrapper";
-import { SearchBar } from "./SearchBar";
-import { Chart } from "./Chart";
+import { Route, Routes, useNavigate, useParams } from "react-router-dom";
+import { db } from "../../../firebase";
+import { ApiDetails } from "../details";
+import { DashboardWrapper } from "../../../components/DashboardWrapper";
+import { SearchBar } from "../../../components/SearchBar";
+import { Chart } from "../../../components/chart";
 
-export const ApiUsers = () => {
+export const Users = () => {
   let { apiId, apiName } = useParams();
   console.log({ apiId, apiName });
 
   let navigate = useNavigate();
   const [users, setUsers] = useState([]);
-
-  const names = {
-    uid: "UID",
-    createdAt: "Created At",
-    lastVerified: "Last Verfied",
-    lastSecretRegenerate: "Last Secret Regenerate",
-    email: "Email",
-    lastKeyRegenerate: "Last Key Regenerate",
-    apiId: "API ID",
-    name: "Name",
-    url: "URL",
-    key: "API Key",
-    secret: "API Secret",
-    timesCalled: "API Call Count",
-    secretGenerationCount: "API Secret Regeneration Count",
-    lastCall: "Last Call",
-  };
 
   useEffect(() => {
     const unsub = onSnapshot(
@@ -39,7 +22,7 @@ export const ApiUsers = () => {
       }
     );
     return () => unsub();
-  }, []);
+  }, [apiId]);
 
   return (
     <DashboardWrapper>

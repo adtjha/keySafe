@@ -1,12 +1,12 @@
 import { useActor } from "@xstate/react";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { GlobalStateContext } from "../App";
-import { DashboardWrapper } from "./DashboardWrapper";
+import { GlobalStateContext } from "../../App";
+import { DashboardWrapper } from "../../components/DashboardWrapper";
 
 export const Profile = () => {
   const globalServices = useContext(GlobalStateContext);
-  const [state, send] = useActor(globalServices.authService);
+  const [state] = useActor(globalServices.authService);
 
   let navigate = useNavigate();
 

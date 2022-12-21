@@ -1,23 +1,21 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect } from "react";
 import "./App.css";
-import { ApiDetails } from "./components/Details";
-import { Dashboard } from "./components/Dashboard";
-import { Routes, Route, createSearchParams } from "react-router-dom";
-import { LandingPage } from "./components/LandingPage";
+import { Dashboard } from "./pages/dashboard";
+import { Routes, Route } from "react-router-dom";
+import { LandingPage } from "./pages/landingPage";
 import { authMachine } from "./xstate/authMachine";
 import { useActor, useInterpret } from "@xstate/react";
 import { DashboardWrapper } from "./components/DashboardWrapper";
-import { ApiUsers } from "./components/Users";
-import { APINew } from "./components/APINew";
-import Protected from "./components/Protected";
+import { Users } from "./pages/api/users";
+import { New } from "./pages/api/new";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Profile } from "./components/Profile";
-import { UserNew } from "./components/UserNew";
+import { Profile } from "./pages/profile";
+import { UserNew } from "./pages/api/user/new";
 
 export const GlobalStateContext = createContext({});
 
-function App() {
+const App = () => {
   const authService = useInterpret(authMachine);
 
   useEffect(() => {
@@ -32,11 +30,11 @@ function App() {
       </div>
     </GlobalStateContext.Provider>
   );
-}
+};
 
 const Home = () => {
   const globalServices = useContext(GlobalStateContext);
-  const [state, send] = useActor(globalServices.authService);
+  const [state] = useActor(globalServices.authService);
 
   if (["checkLogin", "loading"].some(state.matches)) {
     return <>Loading</>;
@@ -53,11 +51,8 @@ const Home = () => {
             }
           />
           <Route path='api'>
-            <Route
-              path=':apiId/:apiName/*'
-              index
-              element={<ApiUsers />}></Route>
-            <Route path='new' element={<APINew />} />
+            <Route path=':id/:name/*' index element={<Users />}></Route>
+            <Route path='new' element={<New />} />
           </Route>
           <Route path='/user/new' element={<UserNew />} />
           <Route path='/profile' element={<Profile />} />

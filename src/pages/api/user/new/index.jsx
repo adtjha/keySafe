@@ -1,13 +1,12 @@
 import { useActor } from "@xstate/react";
-import { data } from "autoprefixer";
 import React, { useContext, useEffect, useState } from "react";
 import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { GlobalStateContext } from "../App";
-import { DashboardWrapper } from "./DashboardWrapper";
+import { GlobalStateContext } from "../../../../App";
+import { DashboardWrapper } from "../../../../components/DashboardWrapper";
 import Editor from "@monaco-editor/react";
 import { toast } from "react-toastify";
-import useScrollPosition from "./useScrollPosition";
+import useScrollPosition from "../../../../components/useScrollPosition";
 
 export const UserNew = () => {
   const globalServices = useContext(GlobalStateContext);

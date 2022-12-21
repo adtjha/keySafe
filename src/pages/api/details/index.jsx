@@ -2,13 +2,10 @@ import { doc, onSnapshot } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import { db } from "../firebase";
-import { Chart } from "./Chart";
+import { db } from "../../../firebase";
+import { Chart } from "../../../components/chart";
 
 export const ApiDetails = ({ apiName, apiId }) => {
-  // let navigate = useNavigate();
-  // let location = useLocation();
-
   let { key } = useParams();
   console.log({ key, apiName, apiId });
 

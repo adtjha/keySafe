@@ -1,9 +1,9 @@
 import { useActor } from "@xstate/react";
 import React, { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { GlobalStateContext } from "../App";
-import { Chart } from "./Chart";
-import { SearchBar } from "./SearchBar";
+import { GlobalStateContext } from "../../App";
+import { Chart } from "../../components/chart";
+import { SearchBar } from "../../components/SearchBar";
 
 export const Dashboard = () => {
   const globalServices = useContext(GlobalStateContext);
