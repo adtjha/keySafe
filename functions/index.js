@@ -9,7 +9,7 @@ const functions = require("firebase-functions");
 const { postApi } = require("./src/api/postApi");
 const { getApi } = require("./src/api/getApi");
 const { postVerify } = require("./src/verify/postVerify");
-const { deleteAPI } = require("./src/api/deleteAPI");
+const { del } = require("./src/api/delete");
 const { post } = require("./src/user/post");
 const { get } = require("./src/user/get");
 const { patch } = require("./src/user/patch");
@@ -30,7 +30,11 @@ const client = new CloudTasksClient();
 // });
 
 const isValidKey = async (key, secret) => {
-    let res, customersRef = db.collection('customers'), keyData = {}, secretHash = createHash('md5').update(secret).digest('hex');
+    let res,
+        customersRef = db.collection('customers'),
+        keyData = {},
+        // secretHash = createHash('md5').update(secret).digest('hex');
+        secretHash = secret;
     try {
         res = await customersRef.where("key", "==", `${key}`).get();
         if (res.empty) {
@@ -38,7 +42,7 @@ const isValidKey = async (key, secret) => {
         } else {
             res.forEach(doc => {
                 keyData = doc.data()
-                console.log(keyData)
+                console.log(key, keyData['secretHash'], secretHash)
                 if (!timingSafeEqual(Buffer.from(keyData['secretHash']), Buffer.from(secretHash))) {
                     throw new Error('Secret Does not match.')
                 }
@@ -93,7 +97,7 @@ exports.api = functions.https.onRequest(async (req, res) => {
             res.send("update an api")
             break;
         case 'DELETE':
-            await deleteAPI(data, keyData, res);
+            await del(data, keyData, res);
             break;
         default:
             break;
@@ -155,7 +159,11 @@ exports.verify = functions.https.onRequest(async (req, res) => {
             data['runtime'] = req.get("X-KEYSAFE-RUN-TIME")
             data['customerId'] = req.get("X-KEYSAFE-CUSTOMER-ID")
             data['url'] = req.get("X-KEYSAFE-API-URL")
-            await postVerify(data, req, res);
+            try {
+                res.status(200).json(await postVerify(data, req, res));
+            } catch (error) {
+                res.status(500).json({ error })
+            }
             break;
         case 'PATCH':
             res.sendStatus(404)
@@ -198,7 +206,6 @@ exports.newUserSignup = functions.auth.user().onCreate(async (user) => {
     }
 })
 
-
 exports.generateSecret = functions.https.onCall(async (data, context) => {
     try {
         const secret = randomBytes(99).toString('hex')
@@ -217,14 +224,12 @@ exports.generateSecret = functions.https.onCall(async (data, context) => {
     }
 })
 
-
 exports.getToken = functions.https.onRequest(async (req, res) => {
     if (req.method !== 'POST') res.sendStatus(400)
-    functions.logger.info("getToken endpoint requested", { structuredData: true });
+    // functions.logger.info("getToken endpoint requested", { structuredData: true });
     console.log(req.headers)
     const auth = req.headers.authorization
     const session_id = req.headers.session_id || randomUUID().toString()
-    console.log(auth)
     const [key, secret] = Buffer.from(auth.split('Basic ')[1], 'base64').toString('ascii').split(':')
     const { status, keyData } = await isValidKey(key, secret)
     functions.logger.debug(status, keyData);
@@ -261,7 +266,7 @@ exports.getToken = functions.https.onRequest(async (req, res) => {
             createdAt: FieldValue.serverTimestamp(),
         })
 
-        res.status(200).send({ access_token: token, session_id })
+        res.status(200).send({ access_token: token, session_id, status: true })
     } catch (error) {
         functions.logger.error(error)
         res.status(500).send({ error })

@@ -4,7 +4,7 @@ const functions = require("firebase-functions");
 const { getFirestore } = require('firebase-admin/firestore');
 const db = getFirestore();
 
-async function deleteAPI(data, keyData, res) {
+async function del(data, keyData, res) {
     try {
         const req_keys = ['url'];
         for (let key of req_keys) {
@@ -21,4 +21,4 @@ async function deleteAPI(data, keyData, res) {
         res.sendStatus(500);
     }
 }
-exports.deleteAPI = deleteAPI;
+exports.del = del;

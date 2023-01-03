@@ -4,8 +4,6 @@ const has = require('has');
 const functions = require("firebase-functions");
 const db = getFirestore();
 
-
-
 async function patch(data, res) {
     try {
         functions.logger.debug({ ...data }, typeof data, { structuredData: true });

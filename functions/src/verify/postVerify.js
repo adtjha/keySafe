@@ -25,17 +25,23 @@ async function postVerify(data, req, res) {
         }
 
         // apiRef = db.collection(resp.data().api);
-
+        console.log(data['secret'], userRes.data().secret)
         // const secretHash = createHash('md5').update(`${data['secret']}`).digest('hex');
         const result = timingSafeEqual(Buffer.from(data['secret']), Buffer.from(userRes.data().secret));
         let has_scope = false
+        const apiRes = await db.collection('api').doc(userRes.data()['apiId']).get()
 
-        const apiRes = await db.collection('api').where('url', '==', data['url']).get()
-
-        if (!apiRes.empty) {
-            apiRes.docs(doc => {
-                has_scope = doc.scopes.every(scope => userRes['allowed_scopes'].contains(scope))
-            })
+        console.log(data['url'])
+        console.log(apiRes.data())
+        if (apiRes.exists) {
+            if (apiRes.data()?.scopes?.length > 0) {
+                // check if user has scopes assigned
+                if (userRes.get('allowedScopes')?.length > 0) {
+                    has_scope = apiRes.data().scopes.every(scope => userRes.data()['allowedScopes'].includes(scope))
+                }
+            } else {
+                has_scope = true
+            }
         } else {
             // no such api exsits with the given url.
             throw new Error('no such api exsits with the given url');
@@ -43,9 +49,9 @@ async function postVerify(data, req, res) {
 
         if (result && has_scope) {
             saveReqRes(req, res, { ...data, secret: data['secret'], lastCheckedAt: Timestamp.now(), isVerified: true });
-            res.json({ ...data, secret: data['secret'], lastCheckedAt: Timestamp.now(), isVerified: true });
+            return { ...data, secret: data['secret'], lastCheckedAt: Timestamp.now(), isVerified: true };
         } else if (!has_scope) {
-            throw new Error('required scope not allowed');
+            throw new Error('unauthorised scope');
         } else {
             throw new Error('secret does not match.');
         }
