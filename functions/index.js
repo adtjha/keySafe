@@ -15,8 +15,6 @@ const { get } = require("./src/user/get");
 const { patch } = require("./src/user/patch");
 const has = require('has');
 
-
-
 // Imports the Google Cloud Tasks library.
 const { CloudTasksClient } = require('@google-cloud/tasks');
 const { updateCountersAnalytics } = require('./src/analytics/updateCountersAnalytics');
@@ -270,53 +268,6 @@ exports.getToken = functions.https.onRequest(async (req, res) => {
     }
 })
 
-// exports.analytics = functions.https.onRequest(async (req, res) => {
-//     functions.logger.info("analytics endpoint requested", { structuredData: true });
-//     const customerId = req.get('X-KEYSAFE-CUSTOMER-ID')
-//     const status = await db.collection('customers').doc(customerId).get();
-//     console.log(status.exists)
-//     if (!status.exists) {
-//         res.status(403).send({
-//             status
-//         })
-//         return
-//     }
-//     let data = JSON.parse(req.body)
-//     switch (req.method) {
-//         case 'GET':
-//             res.sendStatus(404)
-//             break;
-//         case 'POST':
-//             let resp, error;
-//             const analyticsRef = db.collection('customers').doc(customerId).collection('analytics')
-//             try {
-//                 resp = await analyticsRef.add({
-//                     data,
-//                     hash: createHash('md5').update(JSON.stringify(data)).digest('hex'),
-//                     createdAt: FieldValue.serverTimestamp(),
-//                     type: req.get('X-KEYSAFE-ANALYTICS-TYPE'),
-//                     session_id: req.get('X-KEYSAFE-ANALYTICS-SESSION-ID'),
-//                 });
-//             } catch (err) {
-//                 console.error(err)
-//                 error = err
-//             } finally {
-//                 if (error) res.status(500)
-//                 res.json({ data, documentId: resp.id });
-//             }
-//             break;
-//         case 'PATCH':
-//             res.sendStatus(404)
-//             break;
-//         case 'DELETE':
-//             res.sendStatus(404)
-//             break;
-//         default:
-//             break;
-//     }
-// })
-
-
 exports.pushAnalyticsToStack = functions.https.onRequest(async (req, res) => {
     /**
     * Recieves analytics from customers, has one job only,
@@ -501,3 +452,49 @@ exports.handleAnalytics = functions.https.onRequest(async (req, res) => {
             break;
     }
 })
+
+// exports.analytics = functions.https.onRequest(async (req, res) => {
+//     functions.logger.info("analytics endpoint requested", { structuredData: true });
+//     const customerId = req.get('X-KEYSAFE-CUSTOMER-ID')
+//     const status = await db.collection('customers').doc(customerId).get();
+//     console.log(status.exists)
+//     if (!status.exists) {
+    //         res.status(403).send({
+//             status
+//         })
+//         return
+//     }
+//     let data = JSON.parse(req.body)
+//     switch (req.method) {
+//         case 'GET':
+//             res.sendStatus(404)
+//             break;
+//         case 'POST':
+//             let resp, error;
+//             const analyticsRef = db.collection('customers').doc(customerId).collection('analytics')
+//             try {
+//                 resp = await analyticsRef.add({
+//                     data,
+//                     hash: createHash('md5').update(JSON.stringify(data)).digest('hex'),
+//                     createdAt: FieldValue.serverTimestamp(),
+//                     type: req.get('X-KEYSAFE-ANALYTICS-TYPE'),
+//                     session_id: req.get('X-KEYSAFE-ANALYTICS-SESSION-ID'),
+//                 });
+//             } catch (err) {
+//                 console.error(err)
+//                 error = err
+//             } finally {
+//                 if (error) res.status(500)
+//                 res.json({ data, documentId: resp.id });
+//             }
+//             break;
+//         case 'PATCH':
+//             res.sendStatus(404)
+//             break;
+//         case 'DELETE':
+//             res.sendStatus(404)
+//             break;
+//         default:
+//             break;
+//     }
+// })
