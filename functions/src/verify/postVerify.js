@@ -1,4 +1,4 @@
-const { getFirestore, Timestamp, FieldValue } = require('firebase-admin/firestore');
+const { getFirestore, Timestamp } = require('firebase-admin/firestore');
 const { createHash, timingSafeEqual } = require('crypto');
 const has = require('has');
 const functions = require("firebase-functions");
@@ -18,20 +18,34 @@ async function postVerify(data, req, res) {
         }
         const keyHash = createHash('md5').update(`${data['key']}`).digest('hex');
 
-        const resp = await db.collection('users').doc(keyHash).get();
+        const userRes = await db.collection('users').doc(keyHash).get();
 
-        if (!resp.exists) {
+        if (!userRes.exists) {
             throw new Error(`key does not match. ${data['key']} ${keyHash}`);
         }
 
         // apiRef = db.collection(resp.data().api);
 
         // const secretHash = createHash('md5').update(`${data['secret']}`).digest('hex');
-        const result = timingSafeEqual(Buffer.from(createHash('md5').update(`${data['secret']}`).digest('hex')), Buffer.from(resp.data().secret));
+        const result = timingSafeEqual(Buffer.from(data['secret']), Buffer.from(userRes.data().secret));
+        let has_scope = false
 
-        if (result) {
+        const apiRes = await db.collection('api').where('url', '==', data['url']).get()
+
+        if (!apiRes.empty) {
+            apiRes.docs(doc => {
+                has_scope = doc.scopes.every(scope => userRes['allowed_scopes'].contains(scope))
+            })
+        } else {
+            // no such api exsits with the given url.
+            throw new Error('no such api exsits with the given url');
+        }
+
+        if (result && has_scope) {
             saveReqRes(req, res, { ...data, secret: data['secret'], lastCheckedAt: Timestamp.now(), isVerified: true });
             res.json({ ...data, secret: data['secret'], lastCheckedAt: Timestamp.now(), isVerified: true });
+        } else if (!has_scope) {
+            throw new Error('required scope not allowed');
         } else {
             throw new Error('secret does not match.');
         }

@@ -8,21 +8,21 @@ import { SearchBar } from "../../../components/SearchBar";
 import { Chart } from "../../../components/chart";
 
 export const Users = () => {
-  let { apiId, apiName } = useParams();
-  console.log({ apiId, apiName });
+  let { id, name } = useParams();
+  console.log({ id, name });
 
   let navigate = useNavigate();
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
     const unsub = onSnapshot(
-      query(collection(db, "users"), where("apiId", "==", apiId)),
+      query(collection(db, "users"), where("apiId", "==", id)),
       (doc) => {
         setUsers(doc.docs.map((doc) => ({ [doc.id]: doc.data() })));
       }
     );
     return () => unsub();
-  }, [apiId]);
+  }, [id]);
 
   return (
     <DashboardWrapper>
@@ -46,7 +46,7 @@ export const Users = () => {
                 />
               </svg>
             </button>
-            <div className='w-auto text-2xl font-bold'>API : {apiName}</div>
+            <div className='w-auto text-2xl font-bold'>API : {name}</div>
             <div className='w-[45%]'>
               <SearchBar />
             </div>
@@ -144,7 +144,7 @@ export const Users = () => {
           <Route path='user'>
             <Route
               path=':key'
-              element={<ApiDetails apiName={apiName} apiId={apiId} />}
+              element={<ApiDetails apiName={name} apiId={id} />}
             />
           </Route>
         </Routes>
