@@ -43,7 +43,7 @@ export const ApiDetails = ({ apiName, apiId }) => {
       setUid(doc.id);
     });
     return () => unsub();
-  }, [key]);
+  }, [key, setUid]);
 
   useEffect(() => {
     console.log(user);
