@@ -34,7 +34,7 @@ export const ApiDetails = ({ apiName, apiId }) => {
   // };
 
   const [user, setUser] = useState({});
-  const [uid, setUid] = useState({});
+  const [setUid] = useState({});
 
   useEffect(() => {
     const unsub = onSnapshot(doc(db, "users", key), (doc) => {

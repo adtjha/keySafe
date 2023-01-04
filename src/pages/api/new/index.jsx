@@ -15,7 +15,7 @@ export const New = () => {
     sample_secret: "",
   });
 
-  const [useOpenApi, setUseOpenApi] = useState(false);
+  // const [useOpenApi, setUseOpenApi] = useState(false);
 
   const [highlightText, setHighlightText] = useState("");
 

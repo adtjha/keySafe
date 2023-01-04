@@ -144,7 +144,7 @@ export const LineChart = (data, {
         tooltip.attr("transform", `translate(${xScale(quantize(interpolateBasis(X), X.length)[i])},${yScale(quantize(interpolateBasis(Y), Y.length)[i])})`);
 
         tooltip.selectAll("circle")
-            .data([,])
+            .data([])
             .join("circle")
             .attr('r', 4)
             .attr("fill", "black")

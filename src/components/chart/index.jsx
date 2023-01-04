@@ -20,7 +20,7 @@ export const Chart = ({ filename }) => {
         // Handle any errors
         console.error(new Error(error));
       });
-  }, []);
+  }, [filename]);
 
   useEffect(() => {
     if (chartData === undefined) return;

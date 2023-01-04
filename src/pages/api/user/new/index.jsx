@@ -267,9 +267,9 @@ export const UserNew = () => {
 const AddField = ({ open, setOpen, data, setData }) => {
   const editorRef = useRef(null);
 
-  const handleChange = (e) => {
-    setData({ ...data, [e.target.name]: e.target.value });
-  };
+  // const handleChange = (e) => {
+  //   setData({ ...data, [e.target.name]: e.target.value });
+  // };
 
   function handleEditorDidMount(editor, monaco) {
     editorRef.current = editor;

@@ -1,11 +1,11 @@
 import { useActor } from "@xstate/react";
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { GlobalStateContext } from "../App";
 
 export const Navbar = () => {
   const globalServices = useContext(GlobalStateContext);
-  const [state, send] = useActor(globalServices.authService);
+  const [send] = useActor(globalServices.authService);
 
   return (
     <div className='px-16 py-2 w-full flex flex-row items-center justify-center content-center space-x-8 bg-secondary-dark text-secondary-text'>
