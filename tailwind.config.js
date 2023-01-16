@@ -26,10 +26,11 @@ module.exports = {
       red: colors.red,
       indigo: colors.indigo,
       yellow: colors.yellow,
+      stone: colors.stone
     },
     extend: {
       fontFamily: {
-        'sans': 'Ubuntu',
+        'sans': 'Inter',
         'mono': 'Ubuntu Mono'
       }
     },

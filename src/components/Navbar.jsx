@@ -5,7 +5,7 @@ import { GlobalStateContext } from "../App";
 
 export const Navbar = () => {
   const globalServices = useContext(GlobalStateContext);
-  const [send] = useActor(globalServices.authService);
+  const [_, send] = useActor(globalServices.authService);
 
   return (
     <div className='px-16 py-2 w-full flex flex-row items-center justify-center content-center space-x-8 bg-secondary-dark text-secondary-text'>

@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { GlobalStateContext } from "../../App";
-import apiDetails from "../../images/API_Details_Page.png";
-import keySafeFlow from "../../images/keySafe_Flow.png";
+// import apiDetails from "../../images/API_Details_Page.png";
+// import keySafeFlow from "../../images/keySafe_Flow.png";
 import { Pricing } from "./Pricing";
 import { Features } from "./Features";
 
@@ -29,7 +29,7 @@ export const LandingPage = () => {
         </button>
       </div>
       <Features />
-      <div className='w-full h-screen flex flex-col items-center justify-start px-40 py-32 gap-12'>
+      {/* <div className='w-full h-screen flex flex-col items-center justify-start px-40 py-32 gap-12'>
         <h1 className='w-fit text-6xl font-bold tracking-[-3px]'>
           <span className='block'>maintain keys and secret</span>
           <span className='block'>for each user.</span>
@@ -50,7 +50,7 @@ export const LandingPage = () => {
           alt='Screenshot of import page'
           className='max-w-[60%]'
         />
-      </div>
+      </div> */}
       <Pricing />
       <div className='w-full h-screen flex flex-col items-center justify-center gap-6'>
         <button className='bg-primary-light mt-4 px-8 py-4 rounded-2xl text-lg font-medium hover:underline'>
