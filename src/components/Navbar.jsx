@@ -47,23 +47,23 @@ const SubMenu = () => {
         <div className='mt-2 p-2 bg-primary-light shadow-md  hidden group-hover:flex flex-col items-start justify-center gap-4 rounded-md text-primary-text'>
           <Link
             to='/api/new'
-            className='min-w-full text-lg flex flex-row items-center justify-start gap-2 outline-2 group outline-dashed hover:outline-double outline-primary-text/40 hover:outline-primary-text hover:outline-offset-4 rounded-lg'>
-            <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='currentColor' className='w-12 h-12 p-2 rounded-md group-hover:fill-primary-text bg-primary-dark/40'>
+            className='min-w-full text-lg flex flex-row items-center justify-start gap-2 outline-2 group outline-dashed hover:outline-double outline-primary-text/10 hover:bg-primary-dark/40 hover:outline-primary-text transition-all hover:outline-offset-4 rounded-lg divide-x-2 divide-dashed hover:divide-solid divide-primary-text/10 hover:divide-primary-text/0'>
+            <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='currentColor' className='w-8 h-8 p-2 pr-0 rounded-l-md group-hover:fill-primary-text'>
               <path
                 fillRule='evenodd'
                 d='M6.28 5.22a.75.75 0 010 1.06L2.56 10l3.72 3.72a.75.75 0 01-1.06 1.06L.97 10.53a.75.75 0 010-1.06l4.25-4.25a.75.75 0 011.06 0zm7.44 0a.75.75 0 011.06 0l4.25 4.25a.75.75 0 010 1.06l-4.25 4.25a.75.75 0 01-1.06-1.06L17.44 10l-3.72-3.72a.75.75 0 010-1.06zM11.377 2.011a.75.75 0 01.612.867l-2.5 14.5a.75.75 0 01-1.478-.255l2.5-14.5a.75.75 0 01.866-.612z'
                 clipRule='evenodd'
               />
             </svg>
-            <span className='font-sans p-2'>New api</span>
+            <span className='font-sans text-sm p-2'>New api</span>
           </Link>
           <Link
             to='/user/new'
-            className='min-w-fit text-lg flex flex-row items-center justify-start gap-2 outline-2  group outline-dashed hover:outline-double outline-primary-text/40 hover:outline-primary-text hover:outline-offset-4 rounded-lg'>
-            <svg preserveAspectRatio='true' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='currentColor' className='w-12 h-12 p-2 rounded-md group-hover:fill-primary-text bg-primary-dark/40'>
+            className='min-w-fit text-lg flex flex-row items-center justify-start gap-2 outline-2  group outline-dashed hover:outline-double outline-primary-text/10 hover:bg-primary-dark/40 hover:outline-primary-text transition-all hover:outline-offset-4 rounded-lg divide-x-2 divide-dashed hover:divide-solid divide-primary-text/10 hover:divide-primary-text/0'>
+            <svg preserveAspectRatio='true' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='currentColor' className='w-8 h-8 p-2 pr-0 rounded-l-md group-hover:fill-primary-text'>
               <path d='M11 5a3 3 0 11-6 0 3 3 0 016 0zM2.615 16.428a1.224 1.224 0 01-.569-1.175 6.002 6.002 0 0111.908 0c.058.467-.172.92-.57 1.174A9.953 9.953 0 018 18a9.953 9.953 0 01-5.385-1.572zM16.25 5.75a.75.75 0 00-1.5 0v2h-2a.75.75 0 000 1.5h2v2a.75.75 0 001.5 0v-2h2a.75.75 0 000-1.5h-2v-2z' />
             </svg>
-            <span className='font-sans p-2'>New user</span>
+            <span className='font-sans text-sm p-2'>New user</span>
           </Link>
         </div>
       </div>
