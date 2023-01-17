@@ -22,8 +22,8 @@ export const Features = () => {
             and delete meta tags in real time. Get a detailed analytics report
             for each of your endpoint at the click of a button.
           </p>
-          <button className='bg-primary-light text-primary-text font-bold mt-8 px-8 py-4 rounded-2xl text-lg hover:underline'>
-            Try for a week now.
+          <button className='bg-[hsl(159deg_50%_40%)] text-[whitesmoke] hover:shadow-[2px_2px_5px_1px_hsl(159deg_50%_40%_/_15%)] font-bold mt-8 px-8 py-4 rounded-2xl text-lg hover:underline'>
+            Get real-time insights.
           </button>
         </div>
         <img
@@ -51,7 +51,7 @@ export const Features = () => {
             edit access rights easily and quickly. You don't want to integrate
             manual editing. We got it all covered.
           </p>
-          <button className='bg-primary-light text-primary-text font-bold mt-8 px-8 py-4 rounded-2xl text-lg hover:underline'>
+          <button className='bg-[hsl(208deg_50%_45%)] text-[whitesmoke] hover:shadow-[2px_2px_5px_1px_rgb(57_119_172_/_15%)] font-bold mt-8 px-8 py-4 rounded-2xl text-lg hover:underline'>
             Try for a week now.
           </button>
         </div>
@@ -78,7 +78,7 @@ export const Features = () => {
             manage API access tokens and users, track the performance of your
             APIs, and share them with partners and customers.
           </p>
-          <button className='bg-primary-light text-primary-text font-bold mt-8 px-8 py-4 rounded-2xl text-lg hover:underline'>
+          <button className='bg-[hsl(260deg_30%_50%)] text-[whitesmoke] hover:shadow-[2px_2px_5px_1px_rgb(115_89_166_/_15%)] font-bold mt-8 px-8 py-4 rounded-2xl text-lg hover:underline'>
             Try for a week now.
           </button>
         </div>

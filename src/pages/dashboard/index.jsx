@@ -15,11 +15,9 @@ export const Dashboard = () => {
 
   return (
     <React.Fragment>
-      <div className='w-full flex flex-row items-center justify-between gap-4'>
+      <div className='w-full flex flex-row items-center justify-between gap-4 p-4 hover:bg-[whitesmoke] rounded-md'>
         <div className='w-auto flex flex-row h-full items-center justify-start gap-4'>
-          <div className='text-2xl font-bold'>
-            {state.context.user.displayName} API's
-          </div>
+          <div className='text-2xl font-bold'>{state.context.user.displayName} API's</div>
           {/* <div className='px-4 py-2 rounded-lg bg-gray-100 '>
             Show Collections
           </div> */}
@@ -35,7 +33,7 @@ export const Dashboard = () => {
         </div>
       </div>
       <div className='w-full h-64 relative flex flex-row items-center justify-center'>
-        <div className='w-full grid grid-cols-4 grid-flow-row-dense items-center justify-center gap-8'>
+        <div className='w-full grid grid-cols-4 grid-flow-row-dense items-center justify-center hover:bg-[whitesmoke] group p-4 gap-8 rounded-lg'>
           {new Array(8).fill("a").map((e, i, ar) => (
             <React.Fragment>
               <Chart filename={"aapl.csv"}></Chart>
@@ -44,7 +42,7 @@ export const Dashboard = () => {
         </div>
       </div>
       <div className='w-full'>
-        <ul className='w-full rounded-md grid grid-cols-3 items-center justify-between gap-4'>
+        <ul className='w-full rounded-md grid grid-cols-3 items-center justify-between gap-4 p-4 hover:bg-[whitesmoke]'>
           {state.value?.loggedIn?.apiData !== "idle" && <li>Loading...</li>}
           {state.value?.loggedIn?.apiData === "idle" &&
             !state.context.error &&
@@ -52,23 +50,15 @@ export const Dashboard = () => {
             state.context.api.map((a, i) => (
               <li
                 key={`${Object.values(a)[0].name}_${i}`}
-                className='group w-full bg-primary-light-30  border-2 border-transparent hover:border-primary-text p-4 rounded-lg'>
-                <Link
-                  to={`api/${Object.keys(a)[0]}/${Object.values(a)[0].name}`}
-                  className='w-full flex flex-col items-start justify-start font-medium'>
+                className='group w-full outline-2 outline-dashed hover:outline-double outline-primary-text/40 hover:outline-primary-text hover:outline-offset-4 transition-all bg-primary-light-30 p-4 rounded-lg'>
+                <Link to={`api/${Object.keys(a)[0]}/${Object.values(a)[0].name}`} className='w-full flex flex-col items-start justify-start font-medium'>
                   {" "}
-                  <span className='hover:underline text-xl font-bold'>
-                    {Object.values(a)[0].name}
-                  </span>{" "}
-                  <span className='w-full py-2 group-hover:underline rounded-md text-start whitespace-nowrap overflow-hidden text-ellipsis'>
-                    {Object.values(a)[0].url}
-                  </span>
+                  <span className='hover:underline text-xl font-bold'>{Object.values(a)[0].name}</span>{" "}
+                  <span className='w-full py-2 group-hover:underline rounded-md text-start whitespace-nowrap overflow-hidden text-ellipsis'>{Object.values(a)[0].url}</span>
                 </Link>
               </li>
             ))}
-          {state.value?.loggedIn?.apiData === "idle" && state.context.error && (
-            <li>{state.context.error}</li>
-          )}
+          {state.value?.loggedIn?.apiData === "idle" && state.context.error && <li>{state.context.error}</li>}
         </ul>
       </div>
     </React.Fragment>

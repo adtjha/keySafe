@@ -19,3 +19,9 @@ code {
 .firebase-emulator-warning {
   display: none;
 }
+
+@layer components {
+  .active {
+    @apply bg-background rounded-md;
+  }
+}
