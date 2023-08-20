@@ -15,8 +15,9 @@
   "dependencies": {
     "@google-cloud/tasks": "^3.0.5",
     "firebase-admin": "^10.0.2",
-    "firebase-functions": "^4.1.0",
-    "has": "^1.0.3"
+    "firebase-functions": "^4.4.1",
+    "has": "^1.0.3",
+    "yaml": "^2.3.1"
   },
   "devDependencies": {
     "firebase-functions-test": "^0.2.0"

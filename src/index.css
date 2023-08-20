@@ -33,4 +33,8 @@ code {
   .active {
     @apply bg-background rounded-md;
   }
+
+  /* .button-primary-light {
+    @apply transition-all duration-150 outline-4 outline-primary-dark/0 hover:outline-primary-light outline hover:outline-offset-4;
+  } */
 }

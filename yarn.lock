@@ -13586,7 +13586,17 @@
   "resolved" "https://registry.npmjs.org/yallist/-/yallist-4.0.0.tgz"
   "version" "4.0.0"
 
-"yaml@^1.10.0", "yaml@^1.10.2", "yaml@^1.7.2":
+"yaml@^1.10.0":
+  "integrity" "sha512-r3vXyErRCYJ7wg28yvBY5VSoAF8ZvlcW9/BwUzEtUsjvX/DKs24dIkuwjtuprwJJHsbyUbLApepYTR1BN4uHrg=="
+  "resolved" "https://registry.npmjs.org/yaml/-/yaml-1.10.2.tgz"
+  "version" "1.10.2"
+
+"yaml@^1.10.2":
+  "integrity" "sha512-r3vXyErRCYJ7wg28yvBY5VSoAF8ZvlcW9/BwUzEtUsjvX/DKs24dIkuwjtuprwJJHsbyUbLApepYTR1BN4uHrg=="
+  "resolved" "https://registry.npmjs.org/yaml/-/yaml-1.10.2.tgz"
+  "version" "1.10.2"
+
+"yaml@^1.7.2":
   "integrity" "sha512-r3vXyErRCYJ7wg28yvBY5VSoAF8ZvlcW9/BwUzEtUsjvX/DKs24dIkuwjtuprwJJHsbyUbLApepYTR1BN4uHrg=="
   "resolved" "https://registry.npmjs.org/yaml/-/yaml-1.10.2.tgz"
   "version" "1.10.2"

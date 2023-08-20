@@ -11,8 +11,9 @@ export const LandingPage = () => {
   return (
     <div style={{ letterSpacing: "-0.025em" }} className='w-full mb-8 bg-background text-primary-text grid grid-cols-1 items-center justify-center divide-y divide-primary-text/10'>
       <div style={{ textShadow: "0px 0px 4px #0000004d" }} className='snap-start w-full h-screen flex flex-col items-center justify-center gap-6'>
-        <h1 className='w-fit text-8xl tracking-tight font-bold'>
+        <h1 className='w-fit text-[2rem] tracking-tight font-bold'>
           <span className='block'>API Authentication</span>
+          <span className='block'>& Authorization</span>
           <span className='block'> Made Simple.</span>
         </h1>
         <button onClick={() => globalServices.authService.send("LOGIN")} className='absolute top-8 right-8 bg-[#FAFDF7] px-8 py-3 rounded-2xl text-lg font-bold hover:underline'>
@@ -24,8 +25,10 @@ export const LandingPage = () => {
       </div>
       <Features />
       <Pricing />
-      <div className='w-full h-screen flex flex-col items-center justify-center gap-6'>
-        <button className='bg-primary-light mt-4 px-8 py-4 rounded-2xl text-lg font-medium hover:underline'>Try for a week now.</button>
+      <div className='w-full h-screen flex flex-col items-center justify-center'>
+        <div className='h-fit w-fit backdrop-blur-sm hover:bg-white button-primary-light mt-4 rounded-lg'>
+          <button className='bg-primary-light px-8 py-4 rounded-2xl text-lg font-medium'>Try for a week now.</button>
+        </div>
       </div>
     </div>
   );

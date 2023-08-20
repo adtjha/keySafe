@@ -2,7 +2,7 @@ import { useActor } from "@xstate/react";
 import React, { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { GlobalStateContext } from "../../App";
-import { Chart } from "../../components/chart";
+import { Chart } from "../../components/Chart";
 import { SearchBar } from "../../components/SearchBar";
 
 export const Dashboard = () => {
@@ -32,7 +32,7 @@ export const Dashboard = () => {
           <SearchBar />
         </div>
       </div>
-      <div className='w-full h-64 relative flex flex-row items-center justify-center'>
+      {/* <div className='w-full h-64 relative flex flex-row items-center justify-center'>
         <div className='w-full grid grid-cols-4 grid-flow-row-dense items-center justify-center hover:bg-[whitesmoke] group p-4 gap-8 rounded-lg'>
           {new Array(8).fill("a").map((e, i, ar) => (
             <React.Fragment>
@@ -40,7 +40,7 @@ export const Dashboard = () => {
             </React.Fragment>
           ))}
         </div>
-      </div>
+      </div> */}
       <div className='w-full'>
         <ul className='w-full rounded-md grid grid-cols-3 items-center justify-between gap-4 p-4 hover:bg-[whitesmoke]'>
           {state.value?.loggedIn?.apiData !== "idle" && <li>Loading...</li>}

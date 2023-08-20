@@ -15,6 +15,7 @@
     "firebase-functions": "^4.1.0",
     "firebase-tools": "^11.1.0",
     "firebaseui": "^6.0.1",
+    "js-yaml": "^4.1.0",
     "monaco-editor": "^0.34.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -29,6 +30,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "deploy": "firebase deploy --only hosting",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
